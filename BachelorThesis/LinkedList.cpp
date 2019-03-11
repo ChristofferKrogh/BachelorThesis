@@ -16,7 +16,7 @@ LinkedList::LinkedList() {
 }
 
 void LinkedList::createNode(int value) {
-    node *newNode = new node;
+    Node *newNode = new Node;
     newNode -> data = value;
     newNode -> next = NULL;
     newNode -> prev = NULL;
@@ -34,20 +34,20 @@ void LinkedList::createNode(int value) {
 }
 
 void LinkedList::display() {
-    node * currentNode;
+    Node * currentNode;
     currentNode = head;
     if (head == NULL)
         std::cout << "The list is empty";
     while (currentNode != NULL) {
-        std::cout << currentNode -> data << " ";
+        std::cout << currentNode -> data + shiftValue << " ";
         currentNode = currentNode -> next;
     }
     std::cout << std::endl;
 }
 
-node * LinkedList::search(int searchValue) {
+Node * LinkedList::search(int searchValue) {
     searchValue -= shiftValue;
-    node * currentNode;
+    Node * currentNode;
     currentNode = head;
     if (head == NULL) {
         std::cout << "The list is empty" << std::endl;
@@ -71,4 +71,19 @@ node * LinkedList::search(int searchValue) {
 
 void LinkedList::shift(int shiftValue) {
     this->shiftValue += shiftValue;
+}
+
+void LinkedList::setHead(Node * newHead) {
+    this -> head = newHead;
+}
+
+Node * LinkedList::getHead() {
+    return head;
+}
+
+void LinkedList::setTail(Node * newTail) {
+    this -> tail = newTail;
+}
+Node * LinkedList::getTail() {
+    return tail;
 }

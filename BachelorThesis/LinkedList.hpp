@@ -12,23 +12,27 @@
 #include <stdio.h>
 #include <iostream>
 
-struct node {
+struct Node {
     int data;
     int * shiftPointer;
-    node *next;
-    node *prev;
+    Node *next;
+    Node *prev;
 };
 
 class LinkedList {
 private:
-    node *head, *tail;
+    Node *head, *tail;
     int shiftValue = 0;
     
 public:
     LinkedList();
     void createNode(int value);
     void display();
-    node * search(int searchValue);
+    Node * search(int searchValue);
     void shift(int shiftValue);
+    void setHead(Node * newHead);
+    Node * getHead();
+    void setTail(Node * newTail);
+    Node * getTail();
 };
 #endif /* LinkedList_hpp */

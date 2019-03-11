@@ -12,6 +12,8 @@
 #include "BaselineOne.hpp"
 #include "LinkedList.hpp"
 
+LinkedList split(LinkedList listToSplit, int splitValue);
+
 int main(int argc, const char * argv[]) {
 //    BaselineOne baselineOne;
 //    int setOne[] = {1, 2, 6, 8, 9, 10};
@@ -56,15 +58,38 @@ int main(int argc, const char * argv[]) {
     
     
     LinkedList listOne;
-    listOne.display();
     listOne.createNode(7);
     listOne.createNode(9);
     listOne.createNode(13);
+//    listOne.display();
+//    listOne.shift(3);
+//    listOne.display();
+    listOne.createNode(20);
     listOne.display();
-    listOne.shift(3);
-    node * searchNode = listOne.search(11);
+    Node * searchNode = listOne.search(11);
     std::cout << "Value returned from searching for 11: " << (searchNode -> data) << std::endl;
     std::cout << "Shift value belonging to the returned node: " << *(searchNode -> shiftPointer) << std::endl;
+    std::cout << "Splitting at 11\n";
+    LinkedList listTwo = split(listOne, 11);
+    listOne.display();
+    listTwo.display();
     std::cout << "End of program" << std::endl;
     return 0;
 }
+
+LinkedList split(LinkedList listToSplit, int splitValue) {
+    LinkedList newList;
+    Node * newTail = listToSplit.search(splitValue);
+    newList.setTail(listToSplit.getTail());
+    newList.setHead(newTail -> next);
+    newTail -> next = NULL;
+    listToSplit.setTail(newTail);
+    return newList;
+}
+
+//LinkedList createSet(int values[]) {
+//    LinkedList newList;
+//    for (int &value : values) {
+//        newList.createNode(value);
+//    }
+//}
