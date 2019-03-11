@@ -20,6 +20,7 @@ void LinkedList::createNode(int value) {
     newNode -> data = value;
     newNode -> next = NULL;
     newNode -> prev = NULL;
+    newNode -> shiftPointer = &shiftValue;
     
     if (head == NULL) {
         head = newNode;
@@ -45,6 +46,7 @@ void LinkedList::display() {
 }
 
 node * LinkedList::search(int searchValue) {
+    searchValue -= shiftValue;
     node * currentNode;
     currentNode = head;
     if (head == NULL) {
@@ -65,4 +67,8 @@ node * LinkedList::search(int searchValue) {
         currentNode = currentNode -> next;
     }
     return NULL;
+}
+
+void LinkedList::shift(int shiftValue) {
+    this->shiftValue += shiftValue;
 }

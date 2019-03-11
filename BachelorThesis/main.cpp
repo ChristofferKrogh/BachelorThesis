@@ -61,8 +61,10 @@ int main(int argc, const char * argv[]) {
     listOne.createNode(9);
     listOne.createNode(13);
     listOne.display();
-    node * searchNode = listOne.search(9);
-    std::cout << "Value returned from searching for 9: " << (searchNode -> data) << std::endl;
+    listOne.shift(3);
+    node * searchNode = listOne.search(11);
+    std::cout << "Value returned from searching for 11: " << (searchNode -> data) << std::endl;
+    std::cout << "Shift value belonging to the returned node: " << *(searchNode -> shiftPointer) << std::endl;
     std::cout << "End of program" << std::endl;
     return 0;
 }

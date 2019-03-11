@@ -14,6 +14,7 @@
 
 struct node {
     int data;
+    int * shiftPointer;
     node *next;
     node *prev;
 };
@@ -21,11 +22,13 @@ struct node {
 class LinkedList {
 private:
     node *head, *tail;
+    int shiftValue = 0;
     
 public:
     LinkedList();
     void createNode(int value);
     void display();
     node * search(int searchValue);
+    void shift(int shiftValue);
 };
 #endif /* LinkedList_hpp */
