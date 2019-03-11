@@ -10,7 +10,9 @@
 #define BaselineOne_hpp
 
 #include <stdio.h>
+#include <iostream>
 #include <tuple>
+
 class BaselineOne {
 private:
     
@@ -19,5 +21,6 @@ public:
     void shift(int shiftSet[], int setSize, int shiftValue);
     std::tuple<int *, int, int *, int> split(int splitSet[], int setSize, int splitValue);
     int * merge(int setOne[], int setTwo[], int setSizeOne, int setSizeTwo);
+    void display(int array[], int arraySize);
 };
 #endif /* BaselineOne_hpp */

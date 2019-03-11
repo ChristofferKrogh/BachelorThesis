@@ -104,3 +104,15 @@ int * BaselineOne::merge(int setOne[], int setTwo[], int setSizeOne, int setSize
     }
     return mergedSet;
 }
+
+void BaselineOne::display(int array[], int arraySize) {
+    if (arraySize == 0) {
+        std::cout << "Array is empty\n";
+    } else {
+        std::cout << "[" << array[0];
+        for (int i = 1; i < arraySize; i++) {
+            std::cout << ", " << array[i];
+        }
+        std::cout << "]";
+    }
+}
