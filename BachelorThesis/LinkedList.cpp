@@ -68,6 +68,7 @@ Node * LinkedList::search(int searchValue) {
     }
     return NULL;
 }
+test for LEX
 
 void LinkedList::shift(int shiftValue) {
     this->shiftValue += shiftValue;
