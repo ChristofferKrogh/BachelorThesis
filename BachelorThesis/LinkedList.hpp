@@ -20,9 +20,11 @@ struct Node {
 };
 
 class LinkedList {
+public:
+    int shiftValue = 0;
+    
 private:
     Node *head, *tail;
-    int shiftValue = 0;
     
 public:
     LinkedList();

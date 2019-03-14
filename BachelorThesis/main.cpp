@@ -13,6 +13,7 @@
 #include "LinkedList.hpp"
 
 LinkedList split(LinkedList listToSplit, int splitValue);
+LinkedList merge(LinkedList listOne, LinkedList listTwo);
 
 int main(int argc, const char * argv[]) {
 //    BaselineOne baselineOne;
@@ -62,15 +63,15 @@ int main(int argc, const char * argv[]) {
     listOne.createNode(9);
     listOne.createNode(13);
 //    listOne.display();
-//    listOne.shift(3);
 //    listOne.display();
     listOne.createNode(20);
+    listOne.shift(3);
     listOne.display();
     Node * searchNode = listOne.search(11);
     std::cout << "Value returned from searching for 11: " << (searchNode -> data) << std::endl;
     std::cout << "Shift value belonging to the returned node: " << *(searchNode -> shiftPointer) << std::endl;
     std::cout << "Splitting at 11\n";
-    LinkedList listTwo = split(listOne, 11);
+    LinkedList listTwo = split(listOne, 5);
     listOne.display();
     listTwo.display();
     std::cout << "End of program" << std::endl;
@@ -79,12 +80,17 @@ int main(int argc, const char * argv[]) {
 
 LinkedList split(LinkedList listToSplit, int splitValue) {
     LinkedList newList;
+    newList.shiftValue = listToSplit.shiftValue;
     Node * newTail = listToSplit.search(splitValue);
     newList.setTail(listToSplit.getTail());
     newList.setHead(newTail -> next);
     newTail -> next = NULL;
     listToSplit.setTail(newTail);
     return newList;
+}
+
+LinkedList merge(LinkedList listOne, LinkedList listTwo) { // Maybe save the resulting list in one of the existing ones.
+    return listOne;
 }
 
 //LinkedList createSet(int values[]) {
