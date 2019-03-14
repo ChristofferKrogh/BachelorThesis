@@ -36,5 +36,6 @@ public:
     Node * getHead();
     void setTail(Node * newTail);
     Node * getTail();
+    void updateShiftValue(int differenceInShiftValues);
 };
 #endif /* LinkedList_hpp */

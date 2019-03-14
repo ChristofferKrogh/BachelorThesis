@@ -13,7 +13,7 @@
 #include "LinkedList.hpp"
 
 LinkedList split(LinkedList listToSplit, int splitValue);
-LinkedList merge(LinkedList listOne, LinkedList listTwo);
+void merge(LinkedList * listOne, LinkedList * listTwo);
 
 int main(int argc, const char * argv[]) {
 //    BaselineOne baselineOne;
@@ -62,23 +62,40 @@ int main(int argc, const char * argv[]) {
     listOne.createNode(7);
     listOne.createNode(9);
     listOne.createNode(13);
-//    listOne.display();
-//    listOne.display();
     listOne.createNode(20);
-    listOne.shift(3);
+    std::cout << "List 1:\n";
     listOne.display();
-    Node * searchNode = listOne.search(11);
-    std::cout << "Value returned from searching for 11: " << (searchNode -> data) << std::endl;
-    std::cout << "Shift value belonging to the returned node: " << *(searchNode -> shiftPointer) << std::endl;
-    std::cout << "Splitting at 11\n";
-    LinkedList listTwo = split(listOne, 5);
+    std::cout << "Shifting list 1 by 2 gives:\n";
+    listOne.shift(2);
     listOne.display();
+    std::cout << std::endl;
+    
+    LinkedList listTwo;
+    listTwo.createNode(1);
+    listTwo.createNode(2);
+    listTwo.createNode(3);
+    listTwo.createNode(4);
+    listTwo.createNode(5);
+    std::cout << "List 2:\n";
     listTwo.display();
-    std::cout << "End of program" << std::endl;
+    listTwo.shift(4);
+    std::cout << "Shifting list 2 by 4 gives:\n";
+    listTwo.display();
+    merge(&listOne, &listTwo);
+    std::cout << "List 1:\n";
+    listOne.display();
+    std::cout << "List 2:\n";
+    listTwo.display();
+    std::cout << "Shift values are now: " << listOne.shiftValue << " and " << listTwo.shiftValue << std::endl;
+    
+    std::cout << "\n\n";
     return 0;
 }
 
 LinkedList split(LinkedList listToSplit, int splitValue) {
+    // TODO:
+    //  make more robust
+    //  add it to LinkedList class
     LinkedList newList;
     newList.shiftValue = listToSplit.shiftValue;
     Node * newTail = listToSplit.search(splitValue);
@@ -89,8 +106,42 @@ LinkedList split(LinkedList listToSplit, int splitValue) {
     return newList;
 }
 
-LinkedList merge(LinkedList listOne, LinkedList listTwo) { // Maybe save the resulting list in one of the existing ones.
-    return listOne;
+void merge(LinkedList * listOne, LinkedList * listTwo) { // Maybe save the resulting list in one of the existing ones.
+    // The two lists need to have the same shift value
+    int shiftValueDiff = listTwo->shiftValue - listOne->shiftValue;
+    shiftValueDiff < 0? listOne->updateShiftValue(-shiftValueDiff) : listTwo->updateShiftValue(shiftValueDiff);
+    
+    // Now we are ready for the actual merging.
+    Node * i = listOne -> getHead();  // Initial index of first list
+    Node * j = listTwo -> getHead();  // Initial index of second list
+    Node * k;                         // Initial index of merged list
+    if ((i -> data) <= (j -> data)) {
+        k = i;
+        i = i -> next;
+    } else {
+        k = j;
+        j = j -> next;
+    }
+    listOne -> setHead(k);
+    
+    while (i != NULL && j != NULL) {
+        if ((i -> data) <= (j -> data)) {
+            k -> next = i;
+            k = k -> next;
+            i = i -> next;
+        } else {
+            k -> next = j;
+            k = k -> next;
+            j = j -> next;
+        }
+    }
+    
+    if (i != NULL) {
+        k -> next = i;
+    } else if (j != NULL) {
+        k -> next = j;
+        listOne -> setTail(listTwo -> getTail());
+    }
 }
 
 //LinkedList createSet(int values[]) {

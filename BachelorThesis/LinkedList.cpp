@@ -73,6 +73,15 @@ void LinkedList::shift(int shiftValue) {
     this->shiftValue += shiftValue;
 }
 
+void LinkedList::updateShiftValue(int shiftValueDiff) {
+    this->shiftValue -= shiftValueDiff;
+    Node * currentNode = head;
+    while (currentNode != NULL) {
+        currentNode -> data += shiftValueDiff;
+        currentNode = currentNode -> next;
+    }
+}
+
 void LinkedList::setHead(Node * newHead) {
     this -> head = newHead;
 }
@@ -84,6 +93,7 @@ Node * LinkedList::getHead() {
 void LinkedList::setTail(Node * newTail) {
     this -> tail = newTail;
 }
+
 Node * LinkedList::getTail() {
     return tail;
 }
