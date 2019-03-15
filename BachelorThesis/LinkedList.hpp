@@ -14,28 +14,25 @@
 
 struct Node {
     int data;
-    int * shiftPointer;
     Node *next;
-    Node *prev;
 };
 
 class LinkedList {
 public:
     int shiftValue = 0;
+    Node *head, *tail;
     
 private:
-    Node *head, *tail;
     
 public:
     LinkedList();
     void createNode(int value);
+    void createSet(int * values, int listSize);
     void display();
     Node * search(int searchValue);
     void shift(int shiftValue);
-    void setHead(Node * newHead);
-    Node * getHead();
-    void setTail(Node * newTail);
-    Node * getTail();
     void updateShiftValue(int differenceInShiftValues);
+    void merge(LinkedList * newList);
+    LinkedList split(int splitValue);
 };
 #endif /* LinkedList_hpp */
