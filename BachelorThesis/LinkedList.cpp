@@ -16,7 +16,7 @@ LinkedList::LinkedList() {
 }
 
 void LinkedList::createNode(int value) {
-    Node *newNode = new Node;
+    LLNode *newNode = new LLNode;
     newNode -> data = value;
     newNode -> next = NULL;
     
@@ -37,7 +37,7 @@ void LinkedList::createSet(int * values, int listSize) {
 }
 
 void LinkedList::display() {
-    Node * currentNode;
+    LLNode * currentNode;
     currentNode = head;
     if (head == NULL)
         std::cout << "The list is empty";
@@ -48,9 +48,9 @@ void LinkedList::display() {
     std::cout << std::endl;
 }
 
-Node * LinkedList::search(int searchValue) {
+LLNode * LinkedList::search(int searchValue) {
     searchValue -= shiftValue;
-    Node * currentNode;
+    LLNode * currentNode;
     currentNode = head;
     if (head == NULL) {
         std::cout << "The list is empty" << std::endl;
@@ -78,7 +78,7 @@ void LinkedList::shift(int shiftValue) {
 
 void LinkedList::updateShiftValue(int shiftValueDiff) {
     this->shiftValue -= shiftValueDiff;
-    Node * currentNode = head;
+    LLNode * currentNode = head;
     while (currentNode != NULL) {
         currentNode -> data += shiftValueDiff;
         currentNode = currentNode -> next;
@@ -91,9 +91,9 @@ void LinkedList::merge(LinkedList * newList) {
     shiftValueDiff < 0? updateShiftValue(-shiftValueDiff) : newList->updateShiftValue(shiftValueDiff);
     
     // Now we are ready for the actual merging.
-    Node * i = head;  // Initial index of first list
-    Node * j = newList->head;  // Initial index of second list
-    Node * k;                         // Initial index of merged list
+    LLNode * i = head;  // Initial index of first list
+    LLNode * j = newList->head;  // Initial index of second list
+    LLNode * k;                         // Initial index of merged list
     if ((i -> data) <= (j -> data)) {
         k = i;
         i = i -> next;
@@ -126,7 +126,7 @@ void LinkedList::merge(LinkedList * newList) {
 LinkedList LinkedList::split(int splitValue) {
     LinkedList newList;
     newList.shiftValue = this->shiftValue;
-    Node * newTail = search(splitValue);
+    LLNode * newTail = search(splitValue);
     if (newTail == NULL) {
         newList.head = head;
         newList.tail = tail;

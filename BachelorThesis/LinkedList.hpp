@@ -12,15 +12,15 @@
 #include <stdio.h>
 #include <iostream>
 
-struct Node {
+struct LLNode { // Linked List Node
     int data;
-    Node *next;
+    LLNode *next;
 };
 
 class LinkedList {
 public:
     int shiftValue = 0;
-    Node *head, *tail;
+    LLNode *head, *tail;
     
 private:
     
@@ -29,7 +29,7 @@ public:
     void createNode(int value);
     void createSet(int * values, int listSize);
     void display();
-    Node * search(int searchValue);
+    LLNode * search(int searchValue);
     void shift(int shiftValue);
     void updateShiftValue(int differenceInShiftValues);
     void merge(LinkedList * newList);
