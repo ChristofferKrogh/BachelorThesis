@@ -24,32 +24,72 @@ void RedBlackTree::createNode(int value){
         newNode->black = true;
         root = newNode;
     } else {
-        
+        this->newNode(root, value);
+    }
+}
+
+void RedBlackTree::newNode(RBTNode * currentNode, int newValue) {
+    if (newValue <= currentNode->data) {
+        if (currentNode->leftChild != NULL) {
+            newNode(currentNode->leftChild, newValue);
+        } else {
+            RBTNode * newNode = new RBTNode;
+            newNode->data = newValue;
+            newNode->black = false;
+            currentNode->leftChild = newNode;
+        }
+    } else if (newValue > currentNode->data) {
+        if (currentNode->rightChild != NULL) {
+            newNode(currentNode->rightChild, newValue);
+        } else {
+            RBTNode * newNode = new RBTNode;
+            newNode->data = newValue;
+            newNode->black = false;
+            currentNode->rightChild = newNode;
+        }
     }
 }
 
 void RedBlackTree::createTree(int * values, int listSize){
-    
+    createNode(values[0]);
+    for (int i = 1; i < listSize; i++) {
+        newNode(root, values[i]);
+    }
 }
 
 void RedBlackTree::display(){
-    RBTNode * currentNode;
+    inOrder(root);
+}
+
+void RedBlackTree::inOrder(RBTNode * currentNode) {
+    if (currentNode != NULL) {
+        inOrder(currentNode->leftChild);
+        std::cout << currentNode->data << " ";
+        inOrder(currentNode->rightChild);
+    }
 }
 
 RBTNode * RedBlackTree::search(int searchValue){
-    RBTNode * currentNode;
-    return NULL;
+    if (root == NULL) {
+        std::cout << "Tree is empty\n";
+        return NULL;
+    }
+    return searchRecursive(root, searchValue);
 }
 
-void RedBlackTree::shift(int shiftValue){
+RBTNode * RedBlackTree::searchRecursive(RBTNode * currentNode, int searchValue) {
     
 }
 
-void RedBlackTree::merge(RedBlackTree * newTree){
-    
-}
+//void RedBlackTree::shift(int shiftValue){
+//
+//}
 
-RedBlackTree RedBlackTree::split(int splitValue){
-    
-    return *new RedBlackTree();
-}
+//void RedBlackTree::merge(RedBlackTree * newTree){
+//
+//}
+
+//RedBlackTree RedBlackTree::split(int splitValue){
+//
+//    return *new RedBlackTree();
+//}

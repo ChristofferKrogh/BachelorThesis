@@ -11,6 +11,8 @@
 //#include <tuple>
 #include "BaselineOne.hpp"
 #include "LinkedList.hpp"
+#include "RedBlackTree.hpp"
+
 
 int main(int argc, const char * argv[]) {
 //    BaselineOne baselineOne;
@@ -54,23 +56,32 @@ int main(int argc, const char * argv[]) {
 //    baselineOne.display(setFour, setSizeFour); std::cout << ", size = " << setSizeFour << "\n";
 //    baselineOne.display(setFive, setSizeFive); std::cout << ", size = " << setSizeFive << "\n";
     
-    int setValuesOne[] = {7, 9, 13, 20, 22, 25, 27, 28};
-    LinkedList listOne; listOne.createSet(setValuesOne, 8);
-    std::cout << "List 1:\n";
-    listOne.display();
-    std::cout << "Shifting list 1 by 12 gives:\n";
-    listOne.shift(12);
-    listOne.display();
-    LinkedList listTwo = listOne.split(5);
-    std::cout << "List 1 after splitting at 5:\n";
-    listOne.display();
-    std::cout << std::endl;
+//    int setValuesOne[] = {7, 9, 13, 20, 22, 25, 27, 28};
+//    LinkedList listOne; listOne.createSet(setValuesOne, 8);
+//    std::cout << "List 1:\n";
+//    listOne.display();
+//    std::cout << "Shifting list 1 by 12 gives:\n";
+//    listOne.shift(12);
+//    listOne.display();
+//    LinkedList listTwo = listOne.split(5);
+//    std::cout << "List 1 after splitting at 5:\n";
+//    listOne.display();
+//    std::cout << std::endl;
+//
+//    std::cout << "List 2:\n";
+//    listTwo.display();
+//    listTwo.shift(15);
+//    std::cout << "Shifting list 2 by 15 gives:\n";
+//    listTwo.display();
     
-    std::cout << "List 2:\n";
-    listTwo.display();
-    listTwo.shift(15);
-    std::cout << "Shifting list 2 by 15 gives:\n";
-    listTwo.display();
+    int setValuesOne[] = {7, 9, 13, 20, 22, 25, 27, 28};
+    RedBlackTree treeOne; treeOne.createTree(setValuesOne, 8);
+//    treeOne.createNode(7);
+//    treeOne.createNode(8);
+//    treeOne.createNode(9);
+//    treeOne.createNode(10);
+//    treeOne.createNode(5);
+    treeOne.display();
     
     std::cout << "\n\n";
     return 0;
