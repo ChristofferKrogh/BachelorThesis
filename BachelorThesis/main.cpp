@@ -74,15 +74,21 @@ int main(int argc, const char * argv[]) {
 //    std::cout << "Shifting list 2 by 15 gives:\n";
 //    listTwo.display();
     
-    int setValuesOne[] = {7, 9, 13, 20, 22, 25, 27, 28};
-    RedBlackTree treeOne; treeOne.createTree(setValuesOne, 8);
+//    int setValuesOne[] = {7, 9, 13, 20, 22, 25, 27, 28};
+    int setValuesOne[] = {10, 7, 13, 16};
+    RedBlackTree treeOne; treeOne.createTree(setValuesOne, 4);
 //    treeOne.createNode(7);
 //    treeOne.createNode(8);
 //    treeOne.createNode(9);
 //    treeOne.createNode(10);
 //    treeOne.createNode(5);
     treeOne.display();
+    std::cout << std::endl;
+    std::string isTreeValid;
+    isTreeValid = treeOne.checkTreeValidity()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid;
     
     std::cout << "\n\n";
+    treeOne.testDisplay();
     return 0;
 }

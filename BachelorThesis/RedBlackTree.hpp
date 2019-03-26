@@ -11,13 +11,14 @@
 
 #include <stdio.h>
 #include <iostream>
+//#include <stdexcept>
 
 struct RBTNode { // Red Black Tree Node
     int data;
-    RBTNode * parent;
-    RBTNode * leftChild = NULL;
-    RBTNode * rightChild = NULL;
-    bool black;
+    RBTNode * parent = nullptr;
+    RBTNode * leftChild = nullptr;
+    RBTNode * rightChild = nullptr;
+    bool isBlack = false;
 };
 
 class RedBlackTree {
@@ -27,6 +28,11 @@ private:
 private:
     void newNode(RBTNode * currentNode, int newValue);
     RBTNode * searchRecursive(RBTNode * currentNode, int searchValue);
+    void rotateTree(RBTNode * newNode);
+    void inOrder(RBTNode * currentNode);
+    bool checkRedCriteria(RBTNode * currentNode);
+    void fixLineFormation(RBTNode * newNode);
+    void fixZigZagFormation(RBTNode * newNode);
 
     
 public:
@@ -34,8 +40,10 @@ public:
     void createNode(int value);
     void createTree(int * values, int listSize);
     void display();
-    void inOrder(RBTNode * currentNode);
     RBTNode * search(int searchValue);
+    bool checkTreeValidity();
+    void testDisplay();
+//    void createTestTree();
 //    void shift(int shiftValue);
 //    void merge(RedBlackTree * newTree);
 //    RedBlackTree split(int splitValue);
