@@ -33,6 +33,8 @@ private:
     bool checkRedCriteria(RBTNode * currentNode);
     void fixLineFormation(RBTNode * newNode);
     void fixZigZagFormation(RBTNode * newNode);
+    void restoreRBTProperties(RBTNode * currentNode);
+    int blackHeight(RBTNode * currentNode);
 
     
 public:
@@ -41,8 +43,8 @@ public:
     void createTree(int * values, int listSize);
     void display();
     RBTNode * search(int searchValue);
-    bool checkTreeValidity();
-    void testDisplay();
+    bool isTreeValid();
+//    void testDisplay();
 //    void createTestTree();
 //    void shift(int shiftValue);
 //    void merge(RedBlackTree * newTree);

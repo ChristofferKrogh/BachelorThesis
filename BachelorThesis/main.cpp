@@ -75,8 +75,8 @@ int main(int argc, const char * argv[]) {
 //    listTwo.display();
     
 //    int setValuesOne[] = {7, 9, 13, 20, 22, 25, 27, 28};
-    int setValuesOne[] = {10, 7, 13, 16};
-    RedBlackTree treeOne; treeOne.createTree(setValuesOne, 4);
+    int setValuesOne[] = {7, 48, 9, 13, 20, 22, 25, 27, 28};
+    RedBlackTree treeOne; treeOne.createTree(setValuesOne, 8);
 //    treeOne.createNode(7);
 //    treeOne.createNode(8);
 //    treeOne.createNode(9);
@@ -85,10 +85,10 @@ int main(int argc, const char * argv[]) {
     treeOne.display();
     std::cout << std::endl;
     std::string isTreeValid;
-    isTreeValid = treeOne.checkTreeValidity()? "yes" : "no";
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
     std::cout << "Is tree valid? " << isTreeValid;
     
     std::cout << "\n\n";
-    treeOne.testDisplay();
+//    treeOne.testDisplay();
     return 0;
 }
