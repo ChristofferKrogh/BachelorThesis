@@ -10,70 +10,78 @@
 
 RedBlackTree::RedBlackTree(){
     root = nullptr;
+    minNode = nullptr;
+    maxNode = nullptr;
+}
+
+int RedBlackTree::getBlackHeight() {
+    return this->blackHeight(root);
 }
 
 void RedBlackTree::createNode(int value){
     if (root == nullptr) {
         RBTNode * newNode = new RBTNode;
         newNode->data = value;
-        root = newNode;
+        root = minNode = maxNode = newNode;
         root->isBlack = true;
     } else {
-        this->newNode(root, value);
+        createNode(root, value);
     }
-//    restoreRBTProperties(root);
 }
 
-void RedBlackTree::newNode(RBTNode * currentNode, int newValue) {
-    if (newValue <= currentNode->data) {
+void RedBlackTree::createNode(RBTNode * currentNode, int newValue) {
+    if (newValue < currentNode->data) {
         if (currentNode->leftChild != NULL) {
-            newNode(currentNode->leftChild, newValue);
+            createNode(currentNode->leftChild, newValue);
         } else {
             RBTNode * newNode = new RBTNode;
             newNode->data = newValue;
             newNode->isBlack = false;
             newNode->parent = currentNode;
             currentNode->leftChild = newNode;
+            if (newValue < minNode->data) {
+                minNode = newNode;
+            }
             rotateTree(newNode);
         }
     } else if (newValue > currentNode->data) {
         if (currentNode->rightChild != NULL) {
-            newNode(currentNode->rightChild, newValue);
+            createNode(currentNode->rightChild, newValue);
         } else {
             RBTNode * newNode = new RBTNode;
             newNode->data = newValue;
             newNode->isBlack = false;
             newNode->parent = currentNode;
             currentNode->rightChild = newNode;
+            if (newValue > maxNode->data) {
+                maxNode = newNode;
+            }
             rotateTree(newNode);
         }
     }
-    
-//    currentNode = root;
-//    while (currentNode != NULL) {
-//        while (currentNode != NULL) {
-//            if ((currentNode->leftChild == NULL) && (currentNode->rightChild == NULL)) {
-//                rotateTree(currentNode);
-//                break;
-//            }
-//            if (currentNode->leftChild == NULL) {
-//                break;
-//            }
-//            currentNode = currentNode->leftChild;
-//        }
-//        currentNode = currentNode->rightChild;
-//    }
+}
+
+void RedBlackTree::createTree(int * values, int listSize){
+    if (listSize < 1) {
+        // do nothing
+    } else {
+        createNode(values[0]);
+        for (int i = 1; i < listSize; i++) {
+            createNode(root, values[i]);
+        }
+    }
 }
 
 void RedBlackTree::rotateTree(RBTNode * newNode) {
-    // There are two types of rotations:
+    // There are three types of rotations:
     // 1. b-r-r in line formation
     // 2. b-r-r in zig-zag formation
+    // 3. red uncle formation
     // I might only have to check if I should rotate at the new node
     
     // How do I check if I have one of these formations?
     // I can use the parent pointer here. I will get the parent and grandparent of the new node. I can use their values and colors to see if I have special formation. NOTE: check that grandparent isn't NULL. Another way to put this: if the parent is the root then there is no special formation
-    if ((newNode == root) || (newNode->parent == root)) {
+    if ((newNode == root) || (newNode->parent == root)) { // do nothing
     } else if (!(newNode->parent->isBlack)) { // if parent is red then there is a formation
         RBTNode * parent = newNode->parent;
         RBTNode * grandparent = parent->parent;
@@ -88,11 +96,12 @@ void RedBlackTree::rotateTree(RBTNode * newNode) {
             uncle->isBlack = true;
             if (grandparent != root) {
                 grandparent->isBlack = false;
+                rotateTree(grandparent);
             }
         } else {
             // if (grandparent < parent) == (parent < newNode) then line else zig zag
-            if ((newNode->parent->parent->data < newNode->parent->data) ==
-                (newNode->parent->data < newNode->data)) { // line formation
+            if ((grandparent->data < parent->data) ==
+                (parent->data < newNode->data)) { // line formation
                 fixLineFormation(newNode);
             } else { // zig-zag formation
                 fixZigZagFormation(newNode);
@@ -157,14 +166,6 @@ void RedBlackTree::fixZigZagFormation(RBTNode * newNode) {
     fixLineFormation(parent);
 }
 
-void RedBlackTree::createTree(int * values, int listSize){
-    createNode(values[0]);
-    for (int i = 1; i < listSize; i++) {
-        newNode(root, values[i]);
-    }
-    restoreRBTProperties(root);
-}
-
 bool RedBlackTree::isTreeValid() {
     // A red node must not have a red child.
     // All root to leaf paths must have the same amount of black nodes.
@@ -205,8 +206,8 @@ bool RedBlackTree::checkRedCriteria(RBTNode * currentNode) {
 }
 
 int RedBlackTree::blackHeight(RBTNode * currentNode) {
-    if (currentNode == NULL) {
-        return 1;
+    if (currentNode == NULL) { // should maybe return 1 instead
+        return 0;
     }
     int leftBlackHeight = blackHeight(currentNode->leftChild);
     int rightBlackHeight = blackHeight(currentNode->rightChild);
@@ -224,29 +225,42 @@ int RedBlackTree::blackHeight(RBTNode * currentNode) {
     return 0;
 }
 
-void RedBlackTree::restoreRBTProperties(RBTNode * currentNode) {
-    if (currentNode == NULL) {
-    } else {
-        if (!currentNode->isBlack && !currentNode->parent->isBlack) {
-            rotateTree(currentNode);
-        }
-        restoreRBTProperties(currentNode->leftChild);
-        restoreRBTProperties(currentNode->rightChild);
+//void RedBlackTree::restoreRBTProperties(RBTNode * currentNode) {
+//    if (currentNode == NULL) {
+//    } else {
+//        if (!currentNode->isBlack && !currentNode->parent->isBlack) {
+//            rotateTree(currentNode);
+//        }
+//        restoreRBTProperties(currentNode->leftChild);
+//        restoreRBTProperties(currentNode->rightChild);
+//    }
+//}
+
+void RedBlackTree::erase() {
+    root = nullptr;
+    minNode = nullptr;
+    maxNode = nullptr;
+}
+
+void RedBlackTree::display(bool showDetails){
+    if (showDetails) {
+        std::cout << "The black height of the tree is: " << blackHeight(root) << "\n";
     }
+    inOrder(root, showDetails);
 }
 
-void RedBlackTree::display(){
-    inOrder(root);
-}
-
-void RedBlackTree::inOrder(RBTNode * currentNode) {
+void RedBlackTree::inOrder(RBTNode * currentNode, bool showDetails) {
     if (currentNode != NULL) {
-        inOrder(currentNode->leftChild);
+        inOrder(currentNode->leftChild, showDetails);
         std::cout << currentNode->data << " ";
-        if (currentNode->parent != NULL) {
-            std::cout << "(" << currentNode->parent->data << "), ";
+        if (showDetails) {
+            if (currentNode->parent != NULL) {
+                std::cout << "(p: " << currentNode->parent->data << (currentNode->isBlack? ", b" : ", r") << "), ";
+            } else {
+                std::cout << "(root, " << (currentNode->isBlack? "b), " : "r), ");
+            }
         }
-        inOrder(currentNode->rightChild);
+        inOrder(currentNode->rightChild, showDetails);
     }
 }
 
@@ -255,13 +269,95 @@ RBTNode * RedBlackTree::search(int searchValue){
         std::cout << "Tree is empty\n";
         return NULL;
     }
-    return NULL;
-    return searchRecursive(root, searchValue);
+    return predecessorSearch(root, searchValue);
 }
 
-RBTNode * RedBlackTree::searchRecursive(RBTNode * currentNode, int searchValue) {
+RBTNode * RedBlackTree::predecessorSearch(RBTNode * currentNode, int searchValue) {
+    if (currentNode == NULL) {
+        return NULL;
+    } else if (searchValue == currentNode->data) {
+        return currentNode;
+    } else if (searchValue < currentNode->data) {
+        if (currentNode->leftChild == NULL) {
+            while (currentNode->data > searchValue) {
+                currentNode = currentNode->parent;
+                if (currentNode == NULL) {
+                    std::cout << "No node smaller than or equal to search value exists\n";
+                    return NULL;
+                }
+            }
+            return currentNode;
+        } else {
+            return predecessorSearch(currentNode->leftChild, searchValue);
+        }
+    } else if (searchValue > currentNode->data) {
+        if (currentNode->rightChild == NULL) {
+            return currentNode;
+        } else {
+            return predecessorSearch(currentNode->rightChild, searchValue);
+        }
+    }
     return NULL;
 }
+
+void RedBlackTree::join(RedBlackTree * newTree) {
+    int blackHeightOriginal = this->getBlackHeight();
+    int blackHeightNew = newTree->getBlackHeight();
+    RBTNode * currentNode;
+    if (this->maxNode->data < newTree->minNode->data) { // All nodes in this tree are smaller than all nodes in the new tree
+        if (blackHeightOriginal <= blackHeightNew) { // search down in the new tree
+            currentNode = newTree->root;
+            while (blackHeightOriginal != blackHeightNew) {
+                currentNode = currentNode->leftChild;
+                blackHeightNew = blackHeight(currentNode);
+            }
+            if (!currentNode->isBlack) {
+                currentNode = currentNode->leftChild;
+            }
+            RBTNode * currentParent = currentNode->parent;
+            RBTNode * newParent = newTree->minNode;
+            newTree->minNode->parent->leftChild = nullptr;
+            
+            newParent->isBlack = false;
+            newParent->parent = currentParent;
+            currentParent->leftChild = newParent;
+            newParent->leftChild = this->root;
+            newParent->rightChild = currentNode;
+            this->root->parent = newParent;
+            currentNode->parent = newParent;
+            // Update the root of this tree
+            if (currentParent == NULL) {
+                this->root = newParent;
+                newParent->isBlack = true;
+            } else {
+                this->root = newTree->root;
+                rotateTree(newParent);
+            }
+            
+            newTree->erase();
+            
+            
+        } else { // search down in this tree
+            currentNode = this->root;
+            while (blackHeightOriginal != blackHeightNew) {
+                currentNode = currentNode -> rightChild;
+                blackHeightOriginal = blackHeight(currentNode);
+            }
+            if (!currentNode->isBlack) {
+                currentNode = currentNode->rightChild;
+            }
+        }
+    } else if (this->minNode->data > newTree->maxNode->data) { // All nodes in this tree are bigger than all nodes in the new tree
+        
+    } else { // Join error
+        std::cout << "The join prerequistes are not met\n";
+    }
+}
+
+//RedBlackTree RedBlackTree::split(int splitValue){
+//
+//    return *new RedBlackTree();
+//}
 
 //void RedBlackTree::shift(int shiftValue){
 //
@@ -271,26 +367,4 @@ RBTNode * RedBlackTree::searchRecursive(RBTNode * currentNode, int searchValue) 
 //
 //}
 
-//RedBlackTree RedBlackTree::split(int splitValue){
-//
-//    return *new RedBlackTree();
-//}
 
-//void RedBlackTree::createTestTree() {
-//    RBTNode * newNode = new RBTNode;
-//    newNode->
-//}
-
-//void RedBlackTree::testDisplay() {
-//    std::cout << "        " << root->data << " ("<< root->isBlack << ")" << std::endl;
-//    std::cout << "  " << root->leftChild->data << " ("<< root->leftChild->isBlack << ")" << "    " << root->rightChild->data << " ("<< root->rightChild->isBlack << ")" << std::endl;
-//    std::cout << "              " << root->rightChild->rightChild->data << " ("<< root->rightChild->rightChild->isBlack << ")" << std::endl;
-//    std::cout << "                    " << root->data << " " << root->isBlack << std::endl;
-//    std::cout << "         " << root->leftChild->data << " " << root->leftChild->isBlack;
-//    std::cout << "                        " << root->rightChild->data << " " << root->rightChild->isBlack << std::endl;
-//    std::cout << "                            " << root->rightChild->leftChild->data << " " << root->rightChild->leftChild->isBlack << "              ";
-//    std::cout << root->rightChild->rightChild->data << " " << root->rightChild->rightChild->isBlack << std::endl;
-//    std::cout << "                                       " << root->rightChild->rightChild->leftChild->data << " " << root->rightChild->rightChild->leftChild->isBlack << "           ";
-//    std::cout << root->rightChild->rightChild->rightChild->data << " " << root->rightChild->rightChild->rightChild->isBlack << std::endl;
-//    std::cout << root->leftChild->leftChild->data << " " << root->isBlack << std::endl;
-//}

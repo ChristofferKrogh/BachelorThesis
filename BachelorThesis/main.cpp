@@ -75,18 +75,28 @@ int main(int argc, const char * argv[]) {
 //    listTwo.display();
     
 //    int setValuesOne[] = {7, 9, 13, 20, 22, 25, 27, 28};
-    int setValuesOne[] = {7, 48, 9, 13, 20, 22, 25, 27, 28};
-    RedBlackTree treeOne; treeOne.createTree(setValuesOne, 8);
-//    treeOne.createNode(7);
-//    treeOne.createNode(8);
-//    treeOne.createNode(9);
-//    treeOne.createNode(10);
-//    treeOne.createNode(5);
-    treeOne.display();
+    int setValuesOne[] = {7, 49, 9, 111, 57, 13, 21, 23, 25, 33, 133, 27, 29, 13};
+    int setSizeOne = sizeof(setValuesOne) / sizeof(setValuesOne[0]);
+    RedBlackTree treeOne; treeOne.createTree(setValuesOne, setSizeOne);
+    treeOne.display(true);
     std::cout << std::endl;
-    std::string isTreeValid;
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid;
+    std::string isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
+    
+    RedBlackTree treeTwo;
+    treeTwo.createNode(1);
+    treeTwo.createNode(2);
+    treeTwo.createNode(3);
+    treeTwo.createNode(4);
+    treeTwo.display(true);
+    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
+    treeTwo.join(&treeOne);
+    std::cout << "Showing treeOne: \n";
+    treeOne.display(false);
+    std::cout << "\n\n";
+    std::cout << "Showing treeTwo: \n";
+    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
+    treeTwo.display(true);
     
     std::cout << "\n\n";
 //    treeOne.testDisplay();
