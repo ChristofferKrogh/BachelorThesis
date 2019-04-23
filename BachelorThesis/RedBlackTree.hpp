@@ -55,6 +55,11 @@ public:
 //    RedBlackTree split(int splitValue);
     void join(RedBlackTree * newTree);
     void erase();
+    void deleteMinNode();
+    void deleteMaxNode();
+    int blackHeightAssumingValid(RBTNode * currentNode);
+    RBTNode * getLeftmostNodeOfHeight(int blackHeight);
+    RBTNode * getRightmostNodeOfHeight(int blackHeight);
 };
 
 #endif /* RedBlackTree_hpp */

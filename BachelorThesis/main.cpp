@@ -83,6 +83,20 @@ int main(int argc, const char * argv[]) {
     std::string isTreeValid = treeOne.isTreeValid()? "yes" : "no";
     std::cout << "Is tree valid? " << isTreeValid << "\n\n";
     
+//    RedBlackTree treeThree;
+//    treeThree.createNode(111);
+//    treeThree.createNode(101);
+//    treeThree.createNode(105);
+//    treeThree.createNode(121);
+//    treeThree.display(true);
+//    std::cout << "\nIs tree valid? " << treeThree.isTreeValid() << "\n";
+//    treeThree.deleteMaxNode();
+//    treeThree.display(true);
+//    std::cout << "\nIs tree valid? " << treeThree.isTreeValid() << "\n";
+//    treeThree.deleteMaxNode();
+//    treeThree.display(true);
+//    std::cout << "\nIs tree valid? " << treeThree.isTreeValid() << "\n";
+    
     RedBlackTree treeTwo;
     treeTwo.createNode(1);
     treeTwo.createNode(2);
@@ -92,11 +106,12 @@ int main(int argc, const char * argv[]) {
     std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
     treeTwo.join(&treeOne);
     std::cout << "Showing treeOne: \n";
-    treeOne.display(false);
+    treeOne.display(true);
     std::cout << "\n\n";
     std::cout << "Showing treeTwo: \n";
     std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
     treeTwo.display(true);
+    std::cout << "Min node: " << treeTwo.minNode->data << " max node: " << treeTwo.maxNode->data << std::endl;
     
     std::cout << "\n\n";
 //    treeOne.testDisplay();
