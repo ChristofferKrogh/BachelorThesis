@@ -52,14 +52,18 @@ public:
     int getBlackHeight();
 //    void shift(int shiftValue);
 //    void merge(RedBlackTree * newTree);
-//    RedBlackTree split(int splitValue);
+    RedBlackTree split(int splitValue);
     void join(RedBlackTree * newTree);
     void erase();
     void deleteMinNode();
     void deleteMaxNode();
     int blackHeightAssumingValid(RBTNode * currentNode);
-    RBTNode * getLeftmostNodeOfHeight(int blackHeight);
-    RBTNode * getRightmostNodeOfHeight(int blackHeight);
+    RBTNode * getNodeOfHeight(int blackHeight, bool leftmost);
+    void setTree(RedBlackTree * newTree);
+    RBTNode * findMinNode(RBTNode * root);
+    RBTNode * findMaxNode(RBTNode * root);
+    void rotateAfterRedColoring(RBTNode * currentNode);
+    void resolveDoubleBlack(RBTNode * currentNode);
 };
 
 #endif /* RedBlackTree_hpp */

@@ -82,6 +82,20 @@ int main(int argc, const char * argv[]) {
     std::cout << std::endl;
     std::string isTreeValid = treeOne.isTreeValid()? "yes" : "no";
     std::cout << "Is tree valid? " << isTreeValid << "\n\n";
+    treeOne.deleteMinNode();
+    treeOne.display(true);
+    treeOne.deleteMinNode();
+    treeOne.display(true);
+    treeOne.deleteMinNode();
+    treeOne.display(true);
+    treeOne.deleteMinNode();
+    treeOne.display(true);
+    treeOne.deleteMinNode();
+    treeOne.display(true);
+    treeOne.deleteMinNode();
+    treeOne.display(true);
+    treeOne.deleteMinNode();
+    treeOne.display(true);
     
 //    RedBlackTree treeThree;
 //    treeThree.createNode(111);
@@ -97,21 +111,21 @@ int main(int argc, const char * argv[]) {
 //    treeThree.display(true);
 //    std::cout << "\nIs tree valid? " << treeThree.isTreeValid() << "\n";
     
-    RedBlackTree treeTwo;
-    treeTwo.createNode(1);
-    treeTwo.createNode(2);
-    treeTwo.createNode(3);
-    treeTwo.createNode(4);
-    treeTwo.display(true);
-    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
-    treeTwo.join(&treeOne);
-    std::cout << "Showing treeOne: \n";
-    treeOne.display(true);
-    std::cout << "\n\n";
-    std::cout << "Showing treeTwo: \n";
-    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
-    treeTwo.display(true);
-    std::cout << "Min node: " << treeTwo.minNode->data << " max node: " << treeTwo.maxNode->data << std::endl;
+//    RedBlackTree treeTwo;
+//    treeTwo.createNode(1);
+//    treeTwo.createNode(2);
+//    treeTwo.createNode(3);
+//    treeTwo.createNode(4);
+//    treeTwo.display(true);
+//    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
+//    treeTwo.join(&treeOne);
+//    std::cout << "Showing treeOne: \n";
+//    treeOne.display(true);
+//    std::cout << "\n\n";
+//    std::cout << "Showing treeTwo: \n";
+//    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
+//    treeTwo.display(true);
+//    std::cout << "Min node: " << treeTwo.minNode->data << " max node: " << treeTwo.maxNode->data << std::endl;
     
     std::cout << "\n\n";
 //    treeOne.testDisplay();
