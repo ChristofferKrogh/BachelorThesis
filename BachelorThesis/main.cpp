@@ -82,20 +82,59 @@ int main(int argc, const char * argv[]) {
     std::cout << std::endl;
     std::string isTreeValid = treeOne.isTreeValid()? "yes" : "no";
     std::cout << "Is tree valid? " << isTreeValid << "\n\n";
+    treeOne.deleteMaxNode();
+    treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
     treeOne.deleteMinNode();
     treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
+    treeOne.deleteMaxNode();
+    treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
     treeOne.deleteMinNode();
     treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
+    treeOne.deleteMaxNode();
+    treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
     treeOne.deleteMinNode();
     treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
+    treeOne.deleteMaxNode();
+    treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
     treeOne.deleteMinNode();
     treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
+    treeOne.deleteMaxNode();
+    treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
     treeOne.deleteMinNode();
     treeOne.display(true);
-    treeOne.deleteMinNode();
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
+    treeOne.deleteMaxNode();
     treeOne.display(true);
-    treeOne.deleteMinNode();
-    treeOne.display(true);
+    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
+    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 //    RedBlackTree treeThree;
 //    treeThree.createNode(111);

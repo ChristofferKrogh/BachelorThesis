@@ -371,31 +371,38 @@ void RedBlackTree::rotateAfterRedColoring(RBTNode *currentNode) {
     //        l      r         l    l
     
     bool isLeftChild = (currentNode->parent->leftChild == currentNode);
+    RBTNode * parent = currentNode->parent;
     if (currentNode->leftChild != NULL &&
         !currentNode->leftChild->isBlack &&
         currentNode->rightChild != NULL &&
         !currentNode->rightChild->isBlack) { // Two red children
         if (isLeftChild) {
-            currentNode->parent->parent->rightChild = currentNode;
-            currentNode->parent->parent = currentNode;
-            currentNode->parent->leftChild = currentNode->rightChild;
-            currentNode->parent->parent->rightChild = currentNode->parent;
+            parent->leftChild = currentNode->rightChild;
+            parent->leftChild->parent = parent;
+            currentNode->rightChild = parent;
             currentNode->leftChild->isBlack = true;
         } else {
-            currentNode->parent->parent->leftChild = currentNode;
-            currentNode->parent->parent = currentNode;
-            currentNode->parent->rightChild = currentNode->leftChild;
-            currentNode->parent->parent->leftChild = currentNode->parent;
+            parent->rightChild = currentNode->leftChild;
+            parent->rightChild->parent = parent;
+            currentNode->leftChild = parent;
             currentNode->rightChild->isBlack = true;
         }
+        currentNode->parent = parent->parent;
+        parent->parent = currentNode;
+        if (currentNode->parent != NULL) {
+            currentNode->data > currentNode->parent->data? currentNode->parent->rightChild = currentNode : currentNode->parent->leftChild = currentNode;
+            currentNode->isBlack = false;
+        } else {
+            root = currentNode;
+            currentNode->isBlack = true;
+        }
+        
     } else if (currentNode->leftChild != NULL &&
                !currentNode->leftChild->isBlack) { // only left child is red
         fixZigZagFormation(currentNode->leftChild);
     } else if(currentNode->rightChild != NULL &&
               !currentNode->rightChild->isBlack) { // only right child is red
         fixLineFormation(currentNode->rightChild);
-        // I set the currentNode pointer to point at its parent. This is done for the resolveDoubleBlack method
-        currentNode = currentNode->parent;
     }
 }
 
@@ -465,9 +472,20 @@ void RedBlackTree::resolveDoubleBlack(RBTNode *currentNode) {
         } else { // Case 3: the parent and the sibling are both black
             // Recolor
             sibling->isBlack = false;
-            // I update the currentNode pointer to point at the sibling, because I want the currentNode pointer to be updated in the the rotate method
-            currentNode = sibling;
-            rotateAfterRedColoring(currentNode);
+//            // I update the currentNode pointer to point at the sibling, because I want the currentNode pointer to be updated in the the rotate                   method
+//            currentNode = sibling;
+            if (isLeftChild && sibling->rightChild != NULL && !sibling->rightChild->isBlack) {
+                currentNode = sibling;
+            } else if (isLeftChild && sibling->leftChild != NULL && !sibling->leftChild->isBlack) {
+                currentNode = sibling->leftChild;
+            } else if (!isLeftChild && sibling->leftChild != NULL && !sibling->leftChild->isBlack) {
+                currentNode = sibling;
+            } else if (!isLeftChild && sibling->rightChild != NULL && !sibling->rightChild->isBlack) {
+                currentNode = sibling->rightChild;
+            } else {
+                currentNode = currentNode->parent;
+            }
+            rotateAfterRedColoring(sibling);
         }
     }
 }
@@ -507,19 +525,22 @@ void RedBlackTree::deleteMinNode() {
         rotateAfterRedColoring(minNode->rightChild);
     } else if (!minNode->parent->rightChild->isBlack) { // The minNode is black, has no children and a black parent. Since the minNode is black, it must have a sibling. If that sibling is red then it must have two black children.
         // Plan: Recolor and rotate to achieve the situation above
+        RBTNode * parent = minNode->parent;
+        RBTNode * sibling = minNode->parent->rightChild;
         // Firstly, recolor
-        minNode->parent->isBlack = false;
-        minNode->parent->rightChild->isBlack = true;
+        parent->isBlack = false;
+        sibling->isBlack = true;
         // Secondly, rotate
-        RBTNode * newGrandparent = minNode->parent->rightChild;;
-        if (minNode->parent != root) {
-            minNode->parent->parent->leftChild = newGrandparent;
+        parent->rightChild = sibling->leftChild;
+        parent->rightChild->parent = parent;
+        sibling->leftChild = parent;
+        sibling->parent = parent->parent;
+        parent->parent = sibling;
+        if (sibling->parent != NULL) {
+            sibling->parent->leftChild = sibling;
         } else {
-            root = newGrandparent;
+            root = sibling;
         }
-        minNode->parent->rightChild = minNode->parent->rightChild->leftChild;
-        newGrandparent->parent = minNode->parent->parent;
-        newGrandparent->leftChild = minNode->parent;
         
         // Now, we have the same situation as above, so the solution is the same.
         // Recolor
@@ -547,10 +568,10 @@ void RedBlackTree::deleteMinNode() {
 
 void RedBlackTree::deleteMaxNode() {
     // This will be symmetric/equivalent to deleteMinNode()
-    if (!maxNode->isBlack) {
+    if (!maxNode->isBlack) { // the max node is simply removed
         maxNode->parent->rightChild = nullptr;
         maxNode = maxNode->parent;
-    } else if (maxNode->leftChild != NULL) {
+    } else if (maxNode->leftChild != NULL) { // the max node is replaced by its child
         if (maxNode != root) {
             maxNode->parent->rightChild = maxNode->leftChild;
             maxNode->leftChild->parent = maxNode->parent;
@@ -560,31 +581,56 @@ void RedBlackTree::deleteMaxNode() {
         }
         maxNode->leftChild->isBlack = true;
         maxNode = maxNode->leftChild;
-    } else if (maxNode == root) {
+    } else if (maxNode == root) { // We wish to delete the root, and the root has no children. Therefore we erase the tree.
         erase();
-    } else if (!maxNode->parent->isBlack) {
+    } else if (!maxNode->parent->isBlack) { // if the parent is red then the min node and its sibling are black. I will recolor and rotate
         // Recolor
         maxNode->parent->isBlack = true;
         maxNode->parent->leftChild->isBlack = false;
-        // Remove maxNode
+        // Remove minNode
         maxNode->parent->rightChild = nullptr;
         maxNode = maxNode->parent;
-        // Rotate - Note: maxNode is now the parent of the original
-        if (maxNode->leftChild->leftChild != NULL &&
-            maxNode->leftChild->rightChild != NULL) {
-            maxNode->parent->rightChild = maxNode->leftChild;
-            maxNode->parent = maxNode->leftChild;
-            maxNode->leftChild = maxNode->parent->rightChild;
-            maxNode->parent->rightChild = maxNode;
-            maxNode->parent->leftChild->isBlack = true;
-        } else if (maxNode->leftChild->leftChild != NULL) {
-            fixLineFormation(maxNode->leftChild->leftChild);
-        } else if (maxNode->leftChild->rightChild != NULL) {
-            fixZigZagFormation(maxNode->leftChild->rightChild);
+        // Rotate - Note: minNode is now the parent of the original minNode
+        rotateAfterRedColoring(maxNode->leftChild);
+    } else if (!maxNode->parent->leftChild->isBlack) { // The minNode is black, has no children and a black parent. Since the minNode is black, it must have a sibling. If that sibling is red then it must have two black children.
+        // Plan: Recolor and rotate to achieve the situation above
+        RBTNode * parent = maxNode->parent;
+        RBTNode * sibling = maxNode->parent->leftChild;
+        // Firstly, recolor
+        parent->isBlack = false;
+        sibling->isBlack = true;
+        // Secondly, rotate
+        parent->leftChild = sibling->rightChild;
+        parent->leftChild->parent = parent;
+        sibling->rightChild = parent;
+        sibling->parent = parent->parent;
+        parent->parent = sibling;
+        if (sibling->parent != NULL) {
+            sibling->parent->rightChild = sibling;
+        } else {
+            root = sibling;
         }
-    } else { // The maxNode is black, has no children and a black parent
-        // Quick fix below...
-        std::cout << "NOT: ";
+        
+        // Now, we have the same situation as above, so the solution is the same.
+        // Recolor
+        maxNode->parent->isBlack = true;
+        maxNode->parent->leftChild->isBlack = false;
+        // Remove minNode
+        maxNode->parent->rightChild = nullptr;
+        maxNode = maxNode->parent;
+        // Rotate - Note: minNode is now the parent of the original minNode
+        rotateAfterRedColoring(maxNode->leftChild);
+    } else { // minNode is black and has no children. The parent and sibling are also black.
+        // Plan: delete minNode, color sibling red (and rotate if necessary) and consider the parent of minNode as a double-black node. Resolve this double-blackness
+        // Remove minNode
+        maxNode->parent->rightChild = nullptr;
+        maxNode = maxNode->parent;
+        // Recolor and rotate
+        maxNode->leftChild->isBlack = false;
+        // Rotate - Note: minNode is now the parent of the original minNode
+        rotateAfterRedColoring(maxNode->leftChild);
+        // Resolve double-blackness of the new minNode
+        resolveDoubleBlack(maxNode);
     }
     std::cout << "deleted the max node\n";
 }
