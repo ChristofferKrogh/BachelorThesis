@@ -15,7 +15,11 @@ RedBlackTree::RedBlackTree(){
 }
 
 int RedBlackTree::getBlackHeight() {
-    return this->blackHeightAssumingValid(root);
+    if (root == NULL) {
+        return 0;
+    } else {
+        return this->blackHeightAssumingValid(root);
+    }
 }
 
 void RedBlackTree::createNode(int value){
@@ -251,7 +255,7 @@ RBTNode * RedBlackTree::getNodeOfHeight(int blackHeight, bool leftmost) {
     if (currentNode->isBlack) {
         currentBlackHeight++;
     }
-    while (currentBlackHeight != blackHeight) {
+    while (currentBlackHeight < blackHeight) {
         currentNode = currentNode->parent;
         if (currentNode->isBlack) {
             currentBlackHeight++;
@@ -645,12 +649,12 @@ void RedBlackTree::join(RedBlackTree * newTree) {
         int blackHeightOriginal = this->getBlackHeight();
         int blackHeightNew = newTree->getBlackHeight();
         RBTNode * currentNode;
-        if (blackHeightOriginal <= blackHeightNew) { // search down in the new tree
+        if (blackHeightOriginal < blackHeightNew) { // search down in the new tree
             std::cout << "(During join): Searching down in the new tree\n";
-            currentNode = newTree->getNodeOfHeight(blackHeightOriginal, true);
-            RBTNode * currentParent = currentNode->parent;
             RBTNode * newParent = newTree->minNode;
             newTree->deleteMinNode();
+            currentNode = newTree->getNodeOfHeight(blackHeightOriginal, true);
+            RBTNode * currentParent = currentNode->parent;
             
             // Connect the two trees
             newParent->isBlack = false;
@@ -671,16 +675,18 @@ void RedBlackTree::join(RedBlackTree * newTree) {
                 // The currentParent might be red and the newParent is certainly red, so the tree is rotated if necessary.
                 rotateTree(newParent);
             }
-        } else { // search down in this tree
-            currentNode = getNodeOfHeight(blackHeightNew, false);
-            RBTNode * currentParent = currentNode->parent;
+        } else if (blackHeightOriginal > blackHeightNew) { // search down in this tree
             RBTNode * newParent = this->maxNode;
             this->deleteMaxNode();
+            currentNode = getNodeOfHeight(blackHeightNew, false);
+            RBTNode * currentParent = currentNode->parent;
             
             // Connect the two trees
             newParent->isBlack = false;
             newParent->parent = currentParent;
-            currentNode->rightChild = newParent;
+            if (currentParent != NULL) {
+                currentParent->rightChild = newParent;
+            }
             newParent->rightChild = newTree->root;
             newParent->leftChild = currentNode;
             newTree->root->parent = newParent;
@@ -692,15 +698,56 @@ void RedBlackTree::join(RedBlackTree * newTree) {
             } else { // The root does not need updating. However, the newParent is red, and the currentParent might also be red. So the tree is rotated if necessary
                 rotateTree(newParent);
             }
+        } else { // blackHeightOriginal = blackHeightNew
+            // This is a special case, because when the minNode/maxNode is deleted the black height might decrease.
+            // Plan: delete minNode of the newTree. If the black height is still the same then that minNode will become the new root. Otherwise we will search down in this tree to find a node of the same height.
+            RBTNode * newParent = newTree->minNode;
+            newTree->deleteMinNode();
+            blackHeightNew = newTree->getBlackHeight();
+            if (blackHeightOriginal == blackHeightNew) { // Set newParent to be the new root
+                newParent->parent = nullptr;
+                newParent->isBlack = true;
+                newParent->leftChild = this->root;
+                newParent->rightChild = newTree->root;
+                this->root->parent = newParent;
+                newTree->root->parent = newParent;
+                this->root = newParent;
+            } else { // search down in this tree
+                currentNode = this->getNodeOfHeight(blackHeightNew, false);
+                RBTNode * currentParent = currentNode->parent;
+                
+                // Connect the two trees
+                newParent->isBlack = false;
+                newParent->parent = currentParent;
+                if (currentParent != NULL) {
+                    currentParent->rightChild = newParent;
+                }
+                newParent->rightChild = newTree->root;
+                newParent->leftChild = currentNode;
+                if (blackHeightNew != 0) {
+                    newTree->root->parent = newParent;
+                } else {
+                    this->maxNode = root;
+                }
+                currentNode->parent = newParent;
+                // Update the root of this tree
+                if (currentParent == NULL) {
+                    this->root = newParent;
+                    newParent->isBlack = true;
+                } else { // The root does not need updating. However, the newParent is red, and the currentParent might also be red. So the tree is rotated if necessary
+                    rotateTree(newParent);
+                }
+            }
         }
         // Update the maxNode pointer
-        this->maxNode = newTree->maxNode;
+        if (blackHeightNew != 0) {
+            this->maxNode = newTree->maxNode;
+        }
         newTree->erase();
+        std::cout << "Joined the two trees\n";
     } else {
         std::cout << "All elements in the new tree are not greater than all elements in this tree\n";
     }
-    
-    std::cout << "Joined the two trees\n";
 }
 
 RedBlackTree RedBlackTree::split(int splitValue){
@@ -709,12 +756,12 @@ RedBlackTree RedBlackTree::split(int splitValue){
     RBTNode * currentNode = root;
     RBTNode * smallTmpNode = nullptr;
     RBTNode * bigTmpNode = nullptr;
+    RedBlackTree tmpTree;
     
     while (currentNode != NULL) {
         if (splitValue < currentNode->data) {
             // join subtree rooted at currentNode->rightChild  with bigTree using the bigTmpNode
             // Create a RBTree with currentNode->rightChild as root.
-            RedBlackTree tmpTree;
             tmpTree.root = currentNode->rightChild;
             tmpTree.minNode = findMinNode(tmpTree.root);
             tmpTree.maxNode = findMaxNode(tmpTree.root);
@@ -726,27 +773,52 @@ RedBlackTree RedBlackTree::split(int splitValue){
             currentNode = currentNode->leftChild;
         } else if (splitValue > currentNode->data) {
             // join subtree rooted at currentNode->leftChild  with smallTree using the smallTmpNode
-            // smallTmpNode = currentNode
-            // currentNode = currentNode->rightChild
+            // Create a RBTree with currentNode->leftChild as root.
+            tmpTree.root = currentNode->leftChild;
+            tmpTree.minNode = findMinNode(tmpTree.root);
+            tmpTree.maxNode = findMaxNode(tmpTree.root);
+            
+            // Join the temperary tree with the smallTree
+            smallTree->join(&tmpTree);
+            smallTmpNode = currentNode;
+            currentNode = currentNode->rightChild;
         } else { // splitValue = currentNode->data
             // join subtree rooted at currentNode->leftChild  with smallTree using the smallTmpNode
             // join subtree rooted at currentNode->rightChild  with bigTree using the bigTmpNode
             // insert currentNode as maximum node in smallTree
+            
+            // Create a RBTree with currentNode->leftChild as root.
+            tmpTree.root = currentNode->leftChild;
+            tmpTree.minNode = findMinNode(tmpTree.root);
+            tmpTree.maxNode = findMaxNode(tmpTree.root);
+            smallTree->join(&tmpTree);
+            smallTmpNode = currentNode;
+            
+            // Create a RBTree with currentNode->rightChild as root.
+            tmpTree.root = currentNode->rightChild;
+            tmpTree.minNode = findMinNode(tmpTree.root);
+            tmpTree.maxNode = findMaxNode(tmpTree.root);
+            tmpTree.join(bigTree);
+            bigTree->setTree(&tmpTree);
+            
+            currentNode = NULL;
         }
         
         if (smallTmpNode != NULL) {
             // Insert it as maximum node in smallTree
             // I am not sure whether it would be a better idea to use the insert method. It probably would.
             // The benefit of doing it like below is a quicker running time.
-            smallTree->maxNode->rightChild = smallTmpNode;
-            smallTmpNode->parent = smallTree->maxNode;
-            smallTree->maxNode = smallTmpNode;
+//            smallTree->maxNode->rightChild = smallTmpNode;
+//            smallTmpNode->parent = smallTree->maxNode;
+//            smallTree->maxNode = smallTmpNode;
+            smallTree->createNode(smallTmpNode->data);
             
             // I think that smallTmpNode should be set back to NULL so that it doesn't get added to the tree more than once.
             smallTmpNode = nullptr;
         }
         if (bigTmpNode != NULL) {
             // Insert it as minimum node in bigTree
+            bigTree->createNode(bigTmpNode->data);
             
             // I think that bigTmpNode should be set back to NULL so that it doesn't get added to the tree more than once.
             bigTmpNode = nullptr;

@@ -82,59 +82,6 @@ int main(int argc, const char * argv[]) {
     std::cout << std::endl;
     std::string isTreeValid = treeOne.isTreeValid()? "yes" : "no";
     std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMaxNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMinNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMaxNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMinNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMaxNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMinNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMaxNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMinNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMaxNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMinNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    treeOne.deleteMaxNode();
-    treeOne.display(true);
-    isTreeValid = treeOne.isTreeValid()? "yes" : "no";
-    std::cout << "Is tree valid? " << isTreeValid << "\n\n";
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 //    RedBlackTree treeThree;
 //    treeThree.createNode(111);
@@ -150,21 +97,71 @@ int main(int argc, const char * argv[]) {
 //    treeThree.display(true);
 //    std::cout << "\nIs tree valid? " << treeThree.isTreeValid() << "\n";
     
-//    RedBlackTree treeTwo;
-//    treeTwo.createNode(1);
-//    treeTwo.createNode(2);
-//    treeTwo.createNode(3);
-//    treeTwo.createNode(4);
-//    treeTwo.display(true);
-//    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
-//    treeTwo.join(&treeOne);
-//    std::cout << "Showing treeOne: \n";
-//    treeOne.display(true);
-//    std::cout << "\n\n";
-//    std::cout << "Showing treeTwo: \n";
-//    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
-//    treeTwo.display(true);
+    RedBlackTree treeTwo;
+    treeTwo.createNode(1);
+    treeTwo.createNode(2);
+    treeTwo.createNode(3);
+    treeTwo.createNode(4);
+    treeTwo.display(true);
+    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
+    treeTwo.join(&treeOne);
+    std::cout << "Showing treeOne: \n";
+    treeOne.display(true);
+    std::cout << "\n\n";
+    std::cout << "Showing treeTwo: \n";
+    treeTwo.display(true);
+    std::cout << "\nIs tree valid? " << treeTwo.isTreeValid() << "\n";
 //    std::cout << "Min node: " << treeTwo.minNode->data << " max node: " << treeTwo.maxNode->data << std::endl;
+    
+    // Divider
+    std::cout << "\n–––––––––––––––––––––––––––––––––––––––––––––––\n";
+    
+    RedBlackTree treeThree;
+    treeThree.createNode(7);
+    RedBlackTree treeFour;
+    treeFour.createNode(9);
+    treeFour.createNode(8);
+    treeThree.join(&treeFour);
+    std::cout << "\nTree Three:\n";
+    treeThree.display(true);
+    std::cout << "\nIs tree valid? " << treeThree.isTreeValid() << "\n";
+    std::cout << "Min node: " << treeThree.minNode->data << " max node: " << treeThree.maxNode->data << std::endl;
+    
+    RedBlackTree treeFive;
+    treeFive.createNode(11);
+    RedBlackTree treeSix;
+    treeSix.createNode(12);
+    treeSix.createNode(13);
+    treeFive.join(&treeSix);
+    std::cout << "\nTree Five:\n";
+    treeFive.display(true);
+    std::cout << "\nIs tree valid? " << treeFive.isTreeValid() << "\n";
+    std::cout << "Min node: " << treeFive.minNode->data << " max node: " << treeFive.maxNode->data << std::endl;
+    
+    std::cout << "\nJoining....\n";
+    treeThree.join(&treeFive);
+    treeThree.display(true);
+    std::cout << "\nIs tree valid? " << treeThree.isTreeValid() << "\n";
+    std::cout << "Min node: " << treeThree.minNode->data << " max node: " << treeThree.maxNode->data << std::endl;
+    
+    RedBlackTree treeSeven;
+    treeSeven.createNode(67);
+    
+    treeThree.join(&treeSeven);
+    std::cout << "" << treeThree.root->data << "->" << treeThree.root->rightChild->data << "->" << treeThree.root->rightChild->rightChild->data << std::endl;
+    treeThree.display(true);
+    std::cout << "\nIs tree valid? " << treeThree.isTreeValid() << "\n";
+    std::cout << "Min node: " << treeThree.minNode->data << " max node: " << treeThree.maxNode->data << std::endl;
+    
+    // Divider
+    std::cout << "\n–––––––––––––––––––––––––––––––––––––––––––––––\n";
+    std::cout << "Original Tree:\n";
+    treeTwo.display(false);
+    RedBlackTree treeJAER = treeTwo.split(1);
+    std::cout << "\nSplitting with 22\nFirst split:\n";
+    treeTwo.display(false);
+    std::cout << "\n\nSecond split:\n";
+    treeJAER.display(false);
     
     std::cout << "\n\n";
 //    treeOne.testDisplay();
