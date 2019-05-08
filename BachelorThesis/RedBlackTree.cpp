@@ -403,10 +403,18 @@ void RedBlackTree::rotateAfterRedColoring(RBTNode *currentNode) {
         
     } else if (currentNode->leftChild != NULL &&
                !currentNode->leftChild->isBlack) { // only left child is red
-        fixZigZagFormation(currentNode->leftChild);
+        if (isLeftChild) {
+            fixLineFormation(currentNode->leftChild);
+        } else {
+            fixZigZagFormation(currentNode->leftChild);
+        }
     } else if(currentNode->rightChild != NULL &&
               !currentNode->rightChild->isBlack) { // only right child is red
-        fixLineFormation(currentNode->rightChild);
+        if (isLeftChild) {
+            fixZigZagFormation(currentNode->rightChild);
+        } else {
+            fixLineFormation(currentNode->rightChild);
+        }
     }
 }
 
@@ -476,8 +484,6 @@ void RedBlackTree::resolveDoubleBlack(RBTNode *currentNode) {
         } else { // Case 3: the parent and the sibling are both black
             // Recolor
             sibling->isBlack = false;
-//            // I update the currentNode pointer to point at the sibling, because I want the currentNode pointer to be updated in the the rotate                   method
-//            currentNode = sibling;
             if (isLeftChild && sibling->rightChild != NULL && !sibling->rightChild->isBlack) {
                 currentNode = sibling;
             } else if (isLeftChild && sibling->leftChild != NULL && !sibling->leftChild->isBlack) {
@@ -563,11 +569,18 @@ void RedBlackTree::deleteMinNode() {
         // Recolor and rotate
         minNode->rightChild->isBlack = false;
         // Rotate - Note: minNode is now the parent of the original minNode
+        // We might have to resolve a double-black after deleting the minNode, so we have to find out which node is gonna be on top after the rotation
+        RBTNode * topNode = minNode;
+        if (minNode->rightChild->hasRightChild() && !minNode->rightChild->rightChild->isBlack) {
+            topNode = minNode->rightChild;
+        } else if (minNode->rightChild->hasLeftChild() &&
+                   !minNode->rightChild->leftChild->isBlack) {
+            topNode = minNode->rightChild->leftChild;
+        }
         rotateAfterRedColoring(minNode->rightChild);
-        // Resolve double-blackness of the new minNode
-        resolveDoubleBlack(minNode);
+        // Resolve double-blackness of the new topNode
+        resolveDoubleBlack(topNode);
     }
-    std::cout << "deleted the min node\n";
 }
 
 void RedBlackTree::deleteMaxNode() {
@@ -587,16 +600,16 @@ void RedBlackTree::deleteMaxNode() {
         maxNode = maxNode->leftChild;
     } else if (maxNode == root) { // We wish to delete the root, and the root has no children. Therefore we erase the tree.
         erase();
-    } else if (!maxNode->parent->isBlack) { // if the parent is red then the min node and its sibling are black. I will recolor and rotate
+    } else if (!maxNode->parent->isBlack) { // if the parent is red then the max node and its sibling are black. I will recolor and rotate
         // Recolor
         maxNode->parent->isBlack = true;
         maxNode->parent->leftChild->isBlack = false;
-        // Remove minNode
+        // Remove maxNode
         maxNode->parent->rightChild = nullptr;
         maxNode = maxNode->parent;
-        // Rotate - Note: minNode is now the parent of the original minNode
+        // Rotate - Note: maxNode is now the parent of the original maxNode
         rotateAfterRedColoring(maxNode->leftChild);
-    } else if (!maxNode->parent->leftChild->isBlack) { // The minNode is black, has no children and a black parent. Since the minNode is black, it must have a sibling. If that sibling is red then it must have two black children.
+    } else if (!maxNode->parent->leftChild->isBlack) { // The maxNode is black, has no children and a black parent. Since the maxNode is black, it must have a sibling. If that sibling is red then it must have two black children.
         // Plan: Recolor and rotate to achieve the situation above
         RBTNode * parent = maxNode->parent;
         RBTNode * sibling = maxNode->parent->leftChild;
@@ -619,24 +632,31 @@ void RedBlackTree::deleteMaxNode() {
         // Recolor
         maxNode->parent->isBlack = true;
         maxNode->parent->leftChild->isBlack = false;
-        // Remove minNode
+        // Remove maxNode
         maxNode->parent->rightChild = nullptr;
         maxNode = maxNode->parent;
-        // Rotate - Note: minNode is now the parent of the original minNode
+        // Rotate - Note: maxNode is now the parent of the original minNode
         rotateAfterRedColoring(maxNode->leftChild);
-    } else { // minNode is black and has no children. The parent and sibling are also black.
-        // Plan: delete minNode, color sibling red (and rotate if necessary) and consider the parent of minNode as a double-black node. Resolve this double-blackness
-        // Remove minNode
+    } else { // maxNode is black and has no children. The parent and sibling are also black.
+        // Plan: delete maxNode, color sibling red (and rotate if necessary) and consider the parent of maxNode as a double-black node. Resolve this double-blackness
+        // Remove maxNode
         maxNode->parent->rightChild = nullptr;
         maxNode = maxNode->parent;
         // Recolor and rotate
         maxNode->leftChild->isBlack = false;
         // Rotate - Note: minNode is now the parent of the original minNode
+        // We might have to resolve a double-black after deleting the maxNode, so we have to find out which node is gonna be on top after the rotation
+        RBTNode * topNode = maxNode;
+        if (maxNode->leftChild->hasLeftChild() && !maxNode->leftChild->leftChild->isBlack) {
+            topNode = maxNode->leftChild;
+        } else if (maxNode->leftChild->hasRightChild() &&
+                   !maxNode->leftChild->rightChild->isBlack) {
+            topNode = maxNode->leftChild->rightChild;
+        }
         rotateAfterRedColoring(maxNode->leftChild);
-        // Resolve double-blackness of the new minNode
-        resolveDoubleBlack(maxNode);
+        // Resolve double-blackness of the topNode
+        resolveDoubleBlack(topNode);
     }
-    std::cout << "deleted the max node\n";
 }
 
 void RedBlackTree::join(RedBlackTree * newTree) {
@@ -645,12 +665,11 @@ void RedBlackTree::join(RedBlackTree * newTree) {
         this->setTree(newTree);
     } else if (newTree->root == NULL) {
         // Do nothing
-    } else if (this->maxNode->data < newTree->minNode->data) { // Verify that all elements are actually smaller
+    } else if (this->maxNode->data <= newTree->minNode->data) { // Verify that all elements are actually smaller
         int blackHeightOriginal = this->getBlackHeight();
         int blackHeightNew = newTree->getBlackHeight();
         RBTNode * currentNode;
         if (blackHeightOriginal < blackHeightNew) { // search down in the new tree
-            std::cout << "(During join): Searching down in the new tree\n";
             RBTNode * newParent = newTree->minNode;
             newTree->deleteMinNode();
             currentNode = newTree->getNodeOfHeight(blackHeightOriginal, true);
@@ -712,6 +731,8 @@ void RedBlackTree::join(RedBlackTree * newTree) {
                 this->root->parent = newParent;
                 newTree->root->parent = newParent;
                 this->root = newParent;
+            } else if (blackHeightNew == 0) {
+                this->createNode(newParent->data);
             } else { // search down in this tree
                 currentNode = this->getNodeOfHeight(blackHeightNew, false);
                 RBTNode * currentParent = currentNode->parent;
@@ -744,43 +765,48 @@ void RedBlackTree::join(RedBlackTree * newTree) {
             this->maxNode = newTree->maxNode;
         }
         newTree->erase();
-        std::cout << "Joined the two trees\n";
     } else {
         std::cout << "All elements in the new tree are not greater than all elements in this tree\n";
     }
 }
 
-RedBlackTree RedBlackTree::split(int splitValue){
+RedBlackTree * RedBlackTree::split(int splitValue){
     RedBlackTree * smallTree = new RedBlackTree;
     RedBlackTree * bigTree = new RedBlackTree;
     RBTNode * currentNode = root;
-    RBTNode * smallTmpNode = nullptr;
-    RBTNode * bigTmpNode = nullptr;
+    RBTNode * tmpNode = nullptr;
     RedBlackTree tmpTree;
     
     while (currentNode != NULL) {
+        tmpNode = currentNode;
         if (splitValue < currentNode->data) {
             // join subtree rooted at currentNode->rightChild  with bigTree using the bigTmpNode
             // Create a RBTree with currentNode->rightChild as root.
             tmpTree.root = currentNode->rightChild;
+            if (tmpTree.root != NULL) {
+                tmpTree.root->parent = nullptr;
+                tmpTree.root->isBlack = true;
+            }
             tmpTree.minNode = findMinNode(tmpTree.root);
             tmpTree.maxNode = findMaxNode(tmpTree.root);
             
             // Join this temperary tree with the bigTree. The join operation must be made from the perspective of the tree with the smallest nodes.
             tmpTree.join(bigTree);
             bigTree->setTree(&tmpTree);
-            bigTmpNode = currentNode;
             currentNode = currentNode->leftChild;
         } else if (splitValue > currentNode->data) {
             // join subtree rooted at currentNode->leftChild  with smallTree using the smallTmpNode
             // Create a RBTree with currentNode->leftChild as root.
             tmpTree.root = currentNode->leftChild;
+            if (tmpTree.root != NULL) {
+                tmpTree.root->parent = nullptr;
+                tmpTree.root->isBlack = true;
+            }
             tmpTree.minNode = findMinNode(tmpTree.root);
             tmpTree.maxNode = findMaxNode(tmpTree.root);
             
             // Join the temperary tree with the smallTree
             smallTree->join(&tmpTree);
-            smallTmpNode = currentNode;
             currentNode = currentNode->rightChild;
         } else { // splitValue = currentNode->data
             // join subtree rooted at currentNode->leftChild  with smallTree using the smallTmpNode
@@ -789,13 +815,21 @@ RedBlackTree RedBlackTree::split(int splitValue){
             
             // Create a RBTree with currentNode->leftChild as root.
             tmpTree.root = currentNode->leftChild;
+            if (tmpTree.root != NULL) {
+                tmpTree.root->parent = nullptr;
+                tmpTree.root->isBlack = true;
+            }
             tmpTree.minNode = findMinNode(tmpTree.root);
             tmpTree.maxNode = findMaxNode(tmpTree.root);
             smallTree->join(&tmpTree);
-            smallTmpNode = currentNode;
+            
             
             // Create a RBTree with currentNode->rightChild as root.
             tmpTree.root = currentNode->rightChild;
+            if (tmpTree.root != NULL) {
+                tmpTree.root->parent = nullptr;
+                tmpTree.root->isBlack = true;
+            }
             tmpTree.minNode = findMinNode(tmpTree.root);
             tmpTree.maxNode = findMaxNode(tmpTree.root);
             tmpTree.join(bigTree);
@@ -804,35 +838,45 @@ RedBlackTree RedBlackTree::split(int splitValue){
             currentNode = NULL;
         }
         
-        if (smallTmpNode != NULL) {
-            // Insert it as maximum node in smallTree
-            // I am not sure whether it would be a better idea to use the insert method. It probably would.
-            // The benefit of doing it like below is a quicker running time.
-//            smallTree->maxNode->rightChild = smallTmpNode;
-//            smallTmpNode->parent = smallTree->maxNode;
-//            smallTree->maxNode = smallTmpNode;
-            smallTree->createNode(smallTmpNode->data);
-            
-            // I think that smallTmpNode should be set back to NULL so that it doesn't get added to the tree more than once.
-            smallTmpNode = nullptr;
-        }
-        if (bigTmpNode != NULL) {
-            // Insert it as minimum node in bigTree
-            bigTree->createNode(bigTmpNode->data);
-            
-            // I think that bigTmpNode should be set back to NULL so that it doesn't get added to the tree more than once.
-            bigTmpNode = nullptr;
+        if (tmpNode->data <= splitValue) {
+            smallTree->createNode(tmpNode->data);
+        } else {
+            bigTree->createNode(tmpNode->data);
         }
     }
 
-    this->setTree(smallTree);
-    return *bigTree;
+    this->setTree(bigTree);
+    return smallTree;
+}
+
+void RedBlackTree::merge(RedBlackTree * newTree){
+    // Plan:
+    // Find out which tree has the smallest element.
+    // Assuming that treeOne has the smallest element, we will split treeOne at the smallest element of treeTwo.
+    RedBlackTree * mergedTree = new RedBlackTree;
+    RedBlackTree * tmpTree = new RedBlackTree;
+    
+    while (this->root != NULL && newTree->root != NULL) {
+        if (this->minNode->data < newTree->minNode->data) {
+            tmpTree->setTree(this->split(newTree->minNode->data));
+        } else {
+            tmpTree->setTree(newTree->split(this->minNode->data));
+        }
+        mergedTree->join(tmpTree);
+    }
+    
+    if (this->root != NULL) {
+        mergedTree->join(this);
+//        this->display(true);
+//        newTree->display(true);
+    } else if (newTree->root != NULL) {
+        mergedTree->join(newTree);
+//        this->display(true);
+//        newTree->display(true);
+    }
+    this->setTree(mergedTree);
 }
 
 //void RedBlackTree::shift(int shiftValue){
-//
-//}
-
-//void RedBlackTree::merge(RedBlackTree * newTree){
 //
 //}

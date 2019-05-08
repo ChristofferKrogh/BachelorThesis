@@ -20,6 +20,13 @@ struct RBTNode { // Red Black Tree Node
     RBTNode * leftChild = nullptr;
     RBTNode * rightChild = nullptr;
     bool isBlack = false;
+    bool hasLeftChild() {
+        return leftChild != NULL;
+    }
+    
+    bool hasRightChild() {
+        return rightChild != NULL;
+    }
 };
 
 class RedBlackTree {
@@ -51,8 +58,8 @@ public:
     bool isTreeValid();
     int getBlackHeight();
 //    void shift(int shiftValue);
-//    void merge(RedBlackTree * newTree);
-    RedBlackTree split(int splitValue);
+    void merge(RedBlackTree * newTree);
+    RedBlackTree * split(int splitValue);
     void join(RedBlackTree * newTree);
     void erase();
     void deleteMinNode();
@@ -64,6 +71,8 @@ public:
     RBTNode * findMaxNode(RBTNode * root);
     void rotateAfterRedColoring(RBTNode * currentNode);
     void resolveDoubleBlack(RBTNode * currentNode);
+    bool hasLeftChild(RBTNode * currentNode);
+    bool hasRightChild(RBTNode * currentNode);
 };
 
 #endif /* RedBlackTree_hpp */
