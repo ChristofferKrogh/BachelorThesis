@@ -11,15 +11,17 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <vector>
+#include <string>
+#include "BaselineOne.hpp"
+#include "LinkedList.hpp"
+#include "RedBlackTree.hpp"
 
 class Testing {
-private: //private variables
+private:
     
-private: // private methods
-    
-public: // public variables
-    
-public: // public methods
+public:
+    void printTests();
     
 };
 

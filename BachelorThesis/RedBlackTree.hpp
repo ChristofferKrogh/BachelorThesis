@@ -32,9 +32,6 @@ struct RBTNode { // Red Black Tree Node
 
 class RedBlackTree {
 private:
-    
-    
-private:
     void createNode(RBTNode * currentNode, int newValue);
     RBTNode * predecessorSearch(RBTNode * currentNode, int searchValue);
     void rotateTree(RBTNode * newNode);

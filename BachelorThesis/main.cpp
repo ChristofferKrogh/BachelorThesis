@@ -12,33 +12,33 @@
 #include "BaselineOne.hpp"
 #include "LinkedList.hpp"
 #include "RedBlackTree.hpp"
-
+#include "Testing.hpp"
 
 int main(int argc, const char * argv[]) {
-    BaselineOne baselineOne;
-    baselineOne.insert(8);
-    baselineOne.insert(13);
-    baselineOne.insert(17);
-    std::cout << "Showing baselineOne:\n";
-    baselineOne.display();
-    std::cout << "Shifting with 5:\n";
-    baselineOne.shift(5);
-    baselineOne.display();
-    BaselineOne baselineTwo;
-    baselineTwo.insert(10);
-    baselineTwo.insert(15);
-    baselineTwo.insert(19);
-    baselineTwo.insert(23);
-    std::cout << "Showing baselineTwo:\n";
-    baselineTwo.display();
-    std::cout << "Merging the sets:\nShowing baselineOne:\n";
-    baselineOne.merge(baselineTwo);
-    baselineOne.display();
-    std::cout << "Showing baselineTwo:\n";
-    baselineTwo.display();
-    std::cout << "Splitting baselineOne at 18:\n";
-    baselineOne.split(18);
-    baselineOne.display();
+//    BaselineOne baselineOne;
+//    baselineOne.insert(8);
+//    baselineOne.insert(13);
+//    baselineOne.insert(17);
+//    std::cout << "Showing baselineOne:\n";
+//    baselineOne.display();
+//    std::cout << "Shifting with 5:\n";
+//    baselineOne.shift(5);
+//    baselineOne.display();
+//    BaselineOne baselineTwo;
+//    baselineTwo.insert(10);
+//    baselineTwo.insert(15);
+//    baselineTwo.insert(19);
+//    baselineTwo.insert(23);
+//    std::cout << "Showing baselineTwo:\n";
+//    baselineTwo.display();
+//    std::cout << "Merging the sets:\nShowing baselineOne:\n";
+//    baselineOne.merge(baselineTwo);
+//    baselineOne.display();
+//    std::cout << "Showing baselineTwo:\n";
+//    baselineTwo.display();
+//    std::cout << "Splitting baselineOne at 18:\n";
+//    baselineOne.split(18);
+//    baselineOne.display();
     
     
     
@@ -242,20 +242,23 @@ int main(int argc, const char * argv[]) {
 //    std::cout << "Is tree valid? " << treeTwo.isTreeValid() << "\n";
 //    std::cout << treeOne.blackHeightAssumingValid(treeOne.minNode->rightChild);
     
-    std::cout << "\n–––––––––––––––––––––––––––––––––––––––––––––––\n";
-    std::cout << "TESTING SHIFT...\n";
-    RedBlackTree treeOne;
-    treeOne.createNode(7);
-    treeOne.createNode(3);
-    treeOne.createNode(11);
-    std::cout << "treeOne before shift:\n";
-    treeOne.display(false);
-    treeOne.shift(4);
-    std::cout << "treeOne after shifting with 4:\n";
-    treeOne.display(false);
-    treeOne.createNode(6);
-    std::cout << "treeOne after inserting 6:\n";
-    treeOne.display(false);
+//    std::cout << "\n–––––––––––––––––––––––––––––––––––––––––––––––\n";
+//    std::cout << "TESTING SHIFT...\n";
+//    RedBlackTree treeOne;
+//    treeOne.createNode(7);
+//    treeOne.createNode(3);
+//    treeOne.createNode(11);
+//    std::cout << "treeOne before shift:\n";
+//    treeOne.display(false);
+//    treeOne.shift(4);
+//    std::cout << "treeOne after shifting with 4:\n";
+//    treeOne.display(false);
+//    treeOne.createNode(6);
+//    std::cout << "treeOne after inserting 6:\n";
+//    treeOne.display(false);
+    
+    Testing testing;
+    testing.printTests();
     
     std::cout << "\n\n";
 //    treeOne.testDisplay();

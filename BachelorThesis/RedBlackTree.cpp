@@ -876,12 +876,8 @@ void RedBlackTree::merge(RedBlackTree * newTree){
     
     if (this->root != NULL) {
         mergedTree->join(this);
-//        this->display(true);
-//        newTree->display(true);
     } else if (newTree->root != NULL) {
         mergedTree->join(newTree);
-//        this->display(true);
-//        newTree->display(true);
     }
     this->setTree(mergedTree);
 }
