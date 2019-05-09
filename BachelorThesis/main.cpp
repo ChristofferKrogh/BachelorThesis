@@ -8,13 +8,40 @@
 //#include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-//#include <tuple>
-//#include "BaselineOne.hpp"
-//#include "LinkedList.hpp"
+#include <tuple>
+#include "BaselineOne.hpp"
+#include "LinkedList.hpp"
 #include "RedBlackTree.hpp"
 
 
 int main(int argc, const char * argv[]) {
+    BaselineOne baselineOne;
+    baselineOne.insert(8);
+    baselineOne.insert(13);
+    baselineOne.insert(17);
+    std::cout << "Showing baselineOne:\n";
+    baselineOne.display();
+    std::cout << "Shifting with 5:\n";
+    baselineOne.shift(5);
+    baselineOne.display();
+    BaselineOne baselineTwo;
+    baselineTwo.insert(10);
+    baselineTwo.insert(15);
+    baselineTwo.insert(19);
+    baselineTwo.insert(23);
+    std::cout << "Showing baselineTwo:\n";
+    baselineTwo.display();
+    std::cout << "Merging the sets:\nShowing baselineOne:\n";
+    baselineOne.merge(baselineTwo);
+    baselineOne.display();
+    std::cout << "Showing baselineTwo:\n";
+    baselineTwo.display();
+    std::cout << "Splitting baselineOne at 18:\n";
+    baselineOne.split(18);
+    baselineOne.display();
+    
+    
+    
 //    BaselineOne baselineOne;
 //    int setOne[] = {1, 2, 6, 8, 9, 10};
 //    int setSizeOne = sizeof(setOne) / sizeof(setOne[0]);
@@ -190,32 +217,45 @@ int main(int argc, const char * argv[]) {
 //    RedBlackTree treeJeps; treeJeps.createNode(16);
 //    treeJa.join(&treeJeps);
 //    treeJa.display(false);
+//    std::cout << "\n–––––––––––––––––––––––––––––––––––––––––––––––\n";
+//    std::cout << "TESTING MERGE...\n";
+//    int setValuesOne[] = {-2, 1, 2, 12, 13, 15, 16, 17, 332, 325, 456, 34};
+//    int setSizeOne = sizeof(setValuesOne) / sizeof(setValuesOne[0]);
+//    RedBlackTree treeOne; treeOne.createTree(setValuesOne, setSizeOne);
+//    int setValuesTwo[] = {230, 175, 234, 455, 155, 12, 33, 32, 32, 45, 2, 4, -1, 43435043};
+//    int setSizeTwo = sizeof(setValuesTwo) / sizeof(setValuesTwo[0]);
+//    RedBlackTree treeTwo; treeTwo.createTree(setValuesTwo, setSizeTwo);
+//
+//
+//    std::cout << "TreeOne before merge:\n";
+//    treeOne.display(false);
+//    std::cout << "TreeTwo before merge:\n";
+//    treeTwo.display(false);
+//    treeOne.merge(&treeTwo);
+//    std::cout << std::endl;
+//
+//    std::cout << "TreeOne after merge:\n";
+//    treeOne.display(true);
+//    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
+//    std::cout << "\nTreeTwo after merge:\n";
+//    treeTwo.display(false);
+//    std::cout << "Is tree valid? " << treeTwo.isTreeValid() << "\n";
+//    std::cout << treeOne.blackHeightAssumingValid(treeOne.minNode->rightChild);
+    
     std::cout << "\n–––––––––––––––––––––––––––––––––––––––––––––––\n";
-    std::cout << "TESTING MERGE...\n";
-    int setValuesOne[] = {-2, 1, 2, 12, 13, 15, 16, 17, 332, 325, 456, 34};
-    int setSizeOne = sizeof(setValuesOne) / sizeof(setValuesOne[0]);
-    RedBlackTree treeOne; treeOne.createTree(setValuesOne, setSizeOne);
-    int setValuesTwo[] = {230, 175, 234, 455, 155, 12, 33, 32, 32, 45, 2, 4, -1, 43435043};
-    int setSizeTwo = sizeof(setValuesTwo) / sizeof(setValuesTwo[0]);
-    RedBlackTree treeTwo; treeTwo.createTree(setValuesTwo, setSizeTwo);
-    
-    
-    std::cout << "TreeOne before merge:\n";
+    std::cout << "TESTING SHIFT...\n";
+    RedBlackTree treeOne;
+    treeOne.createNode(7);
+    treeOne.createNode(3);
+    treeOne.createNode(11);
+    std::cout << "treeOne before shift:\n";
     treeOne.display(false);
-    std::cout << "TreeTwo before merge:\n";
-    treeTwo.display(false);
-    treeOne.merge(&treeTwo);
-    std::cout << std::endl;
-    
-    std::cout << "TreeOne after merge:\n";
-    treeOne.display(true);
-    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
-    std::cout << "\nTreeTwo after merge:\n";
-    treeTwo.display(false);
-    std::cout << "Is tree valid? " << treeTwo.isTreeValid() << "\n";
-    std::cout << treeOne.blackHeightAssumingValid(treeOne.minNode->rightChild);
-    
-    
+    treeOne.shift(4);
+    std::cout << "treeOne after shifting with 4:\n";
+    treeOne.display(false);
+    treeOne.createNode(6);
+    std::cout << "treeOne after inserting 6:\n";
+    treeOne.display(false);
     
     std::cout << "\n\n";
 //    treeOne.testDisplay();

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BachelorThesis/RedBlackTree.cpp"
-            timestampString = "579045849.347453"
+            timestampString = "579133082.6857359"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
             landmarkName = "RedBlackTree::getNodeOfHeight(int blackHeight, bool leftmost)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BachelorThesis/RedBlackTree.cpp"
-            timestampString = "579045849.3475111"
+            timestampString = "579133082.686007"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "865"
-            endingLineNumber = "865"
+            startingLineNumber = "874"
+            endingLineNumber = "874"
             landmarkName = "RedBlackTree::merge(RedBlackTree * newTree)"
             landmarkType = "7">
          </BreakpointContent>

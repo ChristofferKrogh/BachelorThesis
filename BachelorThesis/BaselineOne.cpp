@@ -8,9 +8,47 @@
 
 #include "BaselineOne.hpp"
 
+
+
+void BaselineOne::insert(int value) {
+    values.push_back(value);
+}
+
+void BaselineOne::setValues(std::vector<int> newValues) {
+    values = newValues;
+}
+
+int BaselineOne::search(int searchValue) {
+    // Primarily a binary search - with the addition that it returns the index of the largest element smaller than or equal to the search value.
+    int leftmostOfSearchArray = 0;
+    int rightmostOfSearchArray = static_cast<int>(values.size())  - 1;
+    int middleOfSearchArray = 0;
+    if (leftmostOfSearchArray > rightmostOfSearchArray) { // The set is empty
+        return -1;
+    } else if (values[0] > searchValue) { // no elements are smaller than or equal to the search value
+        return -2;
+    }
+    while (leftmostOfSearchArray <= rightmostOfSearchArray) {
+        middleOfSearchArray = (leftmostOfSearchArray + rightmostOfSearchArray) / 2;
+        if (values[middleOfSearchArray] < searchValue) {
+            leftmostOfSearchArray = middleOfSearchArray + 1;
+        } else if (values[middleOfSearchArray] > searchValue) {
+            rightmostOfSearchArray = middleOfSearchArray - 1;
+        } else {
+            return middleOfSearchArray;
+        }
+        if (values[middleOfSearchArray + 1] > searchValue &&
+            values[middleOfSearchArray] < searchValue) {
+            return middleOfSearchArray;
+        }
+    }
+    return NULL;
+}
+
+/* OLD SEARCH
 int BaselineOne::search(int searchSet[], int setSize, int searchValue) {
-    /* Primarily a binary search - with the addition that it returns the index of the largest
-     element smaller than or equal to the search value.*/
+     Primarily a binary search - with the addition that it returns the index of the largest
+     element smaller than or equal to the search value.
     int leftmostOfSearchArray = 0;
     int rightmostOfSearchArray = setSize - 1;
     int middleOfSearchArray = 0;
@@ -35,13 +73,42 @@ int BaselineOne::search(int searchSet[], int setSize, int searchValue) {
     }
     return NULL;
 }
+*/
 
+/* OLD SHIFT
 void BaselineOne::shift(int shiftSet[], int setSize, int shiftValue) {
     for (int i = 0; i < setSize; i++) {
         shiftSet[i] += shiftValue;
     }
+}*/
+
+void BaselineOne::shift(int shiftValue) {
+    for (int &value : values) {
+        value += shiftValue;
+    }
 }
 
+std::vector<int> BaselineOne::split(int splitValue) {
+    int splitIndex = search(splitValue);
+    if (splitIndex < 0) {
+        //        throw error
+    }
+    
+    std::vector<int> setOne;
+    std::vector<int> setTwo;
+    
+    for (int i = 0; i <= splitIndex; i++) {
+        setOne.push_back(values[i]);
+    }
+    for (int i = 0; i < static_cast<int>(values.size()) - splitIndex - 1; i++) {
+        setTwo.push_back(values[i + splitIndex + 1]);
+    }
+    values = setTwo;
+    
+    return setOne;
+}
+
+/* old split
 std::tuple<int *, int, int *, int> BaselineOne::split(int splitSet[], int setSize, int splitValue) {
     int splitIndex = search(splitSet, setSize, splitValue);
     if (splitIndex < 0) {
@@ -66,12 +133,13 @@ std::tuple<int *, int, int *, int> BaselineOne::split(int splitSet[], int setSiz
     
     return splitSets;
 }
-
+ */
+/*
 int * BaselineOne::merge(int setOne[], int setTwo[], int setSizeOne, int setSizeTwo) {
-    /* Merges the two input sets using methods from merge sort*/
+    // Merges the two input sets using methods from merge sort
     int * mergedSet = new int[setSizeOne + setSizeTwo];
     int i, j, k;
-    /* Merge the arrays into mergedSet*/
+    // Merge the arrays into mergedSet
     i = 0; // Initial index of first subarray
     j = 0; // Initial index of second subarray
     k = 0; // Initial index of merged subarray
@@ -87,24 +155,62 @@ int * BaselineOne::merge(int setOne[], int setTwo[], int setSizeOne, int setSize
         k++;
     }
     
-    /* Copy the remaining elements of setOne, if there
-     are any */
+    // Copy the remaining elements of setOne, if there are any
     while (i < setSizeOne) {
         mergedSet[k] = setOne[i];
         i++;
         k++;
     }
     
-    /* Copy the remaining elements of setTwo, if there
-     are any */
+   // Copy the remaining elements of setTwo, if there are any
     while (j < setSizeTwo) {
         mergedSet[k] = setTwo[j];
         j++;
         k++;
     }
     return mergedSet;
+}*/
+
+void BaselineOne::merge(BaselineOne newSet) {
+    /* Merges the two input sets using methods from merge sort*/
+    std::vector<int> mergedSet;
+    int i, j, k;
+    /* Merge the arrays into mergedSet*/
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = 0; // Initial index of merged subarray
+    while (i < static_cast<int>(values.size()) && j < static_cast<int>(newSet.values.size())) {
+        if (values[i] <= newSet.values[j]) {
+            mergedSet.push_back(values[i]);
+            i++;
+        }
+        else {
+            mergedSet.push_back(newSet.values[j]);
+            j++;
+        }
+        k++;
+    }
+    
+    /* Copy the remaining elements of setOne, if there
+     are any */
+    while (i < static_cast<int>(values.size())) {
+        mergedSet[k] = values[i];
+        i++;
+        k++;
+    }
+    
+    /* Copy the remaining elements of setTwo, if there
+     are any */
+    while (j < static_cast<int>(newSet.values.size())) {
+        mergedSet[k] = newSet.values[j];
+        j++;
+        k++;
+    }
+    values = mergedSet;
+    newSet.values.clear();
 }
 
+/* OLD DISPLAY
 void BaselineOne::display(int array[], int arraySize) {
     if (arraySize == 0) {
         std::cout << "Array is empty\n";
@@ -115,4 +221,11 @@ void BaselineOne::display(int array[], int arraySize) {
         }
         std::cout << "]";
     }
+}*/
+
+void BaselineOne::display() {
+    for (int value : values) {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
 }

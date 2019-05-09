@@ -19,6 +19,7 @@ struct RBTNode { // Red Black Tree Node
     RBTNode * parent = nullptr;
     RBTNode * leftChild = nullptr;
     RBTNode * rightChild = nullptr;
+    int shift = 0;
     bool isBlack = false;
     bool hasLeftChild() {
         return leftChild != NULL;
@@ -37,7 +38,7 @@ private:
     void createNode(RBTNode * currentNode, int newValue);
     RBTNode * predecessorSearch(RBTNode * currentNode, int searchValue);
     void rotateTree(RBTNode * newNode);
-    void inOrder(RBTNode * currentNode, bool showDetails);
+    void inOrder(RBTNode * currentNode, bool showDetails, int currentShiftValue);
     bool checkRedCriteria(RBTNode * currentNode);
     void fixLineFormation(RBTNode * newNode);
     void fixZigZagFormation(RBTNode * newNode);
@@ -57,7 +58,7 @@ public:
     RBTNode * search(int searchValue);
     bool isTreeValid();
     int getBlackHeight();
-//    void shift(int shiftValue);
+    void shift(int shiftValue);
     void merge(RedBlackTree * newTree);
     RedBlackTree * split(int splitValue);
     void join(RedBlackTree * newTree);

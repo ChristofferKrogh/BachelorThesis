@@ -34,6 +34,7 @@ void RedBlackTree::createNode(int value){
 }
 
 void RedBlackTree::createNode(RBTNode * currentNode, int newValue) {
+    newValue -= currentNode->shift;
     if (newValue < currentNode->data) {
         if (currentNode->leftChild != NULL) {
             createNode(currentNode->leftChild, newValue);
@@ -192,6 +193,13 @@ bool RedBlackTree::checkRedCriteria(RBTNode * currentNode) {
         return true;
     }
     
+    if ((currentNode->leftChild != NULL && currentNode->leftChild->data > currentNode->data) ||
+        (currentNode->rightChild != NULL &&
+         currentNode->rightChild->data < currentNode->data)) {
+            std::cout << "The node with value " << currentNode->data << " has at least one child that is misplaced\n";
+            return false;
+        }
+    
     if (!(checkRedCriteria(currentNode->leftChild))) { // If the left child does not satisfy the red criteria
         return false;
     }
@@ -291,14 +299,15 @@ void RedBlackTree::display(bool showDetails){
     if (showDetails) {
         std::cout << "The black height of the tree is: " << getBlackHeight() << "\n";
     }
-    inOrder(root, showDetails);
+    inOrder(root, showDetails, 0);
     std::cout << std::endl;
 }
 
-void RedBlackTree::inOrder(RBTNode * currentNode, bool showDetails) {
+void RedBlackTree::inOrder(RBTNode * currentNode, bool showDetails, int currentShiftValue) {
     if (currentNode != NULL) {
-        inOrder(currentNode->leftChild, showDetails);
-        std::cout << currentNode->data << " ";
+        currentShiftValue += currentNode->shift;
+        inOrder(currentNode->leftChild, showDetails, currentShiftValue);
+        std::cout << currentNode->data + currentShiftValue << " ";
         if (showDetails) {
             if (currentNode->parent != NULL) {
                 std::cout << "(p: " << currentNode->parent->data << (currentNode->isBlack? ", b" : ", r") << "), ";
@@ -306,7 +315,7 @@ void RedBlackTree::inOrder(RBTNode * currentNode, bool showDetails) {
                 std::cout << "(root, " << (currentNode->isBlack? "b), " : "r), ");
             }
         }
-        inOrder(currentNode->rightChild, showDetails);
+        inOrder(currentNode->rightChild, showDetails, currentShiftValue);
     }
 }
 
@@ -877,6 +886,6 @@ void RedBlackTree::merge(RedBlackTree * newTree){
     this->setTree(mergedTree);
 }
 
-//void RedBlackTree::shift(int shiftValue){
-//
-//}
+void RedBlackTree::shift(int shiftValue){
+    this->root->shift += shiftValue;
+}

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7E0EAF572233ED6E00FAFD75 /* BaselineOne.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E0EAF552233ED6E00FAFD75 /* BaselineOne.cpp */; };
 		7E0EB2DA2235B48F0035021E /* LinkedList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E0EB2D82235B48F0035021E /* LinkedList.cpp */; };
+		7E1753A3228435C200567153 /* Testing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E1753A1228435C200567153 /* Testing.cpp */; };
 		7E23B8A122244A63009E2349 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E23B8A022244A63009E2349 /* main.cpp */; };
 		7EBB0248223EFB3A00237618 /* RedBlackTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB0246223EFB3A00237618 /* RedBlackTree.cpp */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,8 @@
 		7E0EAF562233ED6E00FAFD75 /* BaselineOne.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BaselineOne.hpp; sourceTree = "<group>"; };
 		7E0EB2D82235B48F0035021E /* LinkedList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinkedList.cpp; sourceTree = "<group>"; };
 		7E0EB2D92235B48F0035021E /* LinkedList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LinkedList.hpp; sourceTree = "<group>"; };
+		7E1753A1228435C200567153 /* Testing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Testing.cpp; sourceTree = "<group>"; };
+		7E1753A2228435C200567153 /* Testing.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Testing.hpp; sourceTree = "<group>"; };
 		7E23B89D22244A63009E2349 /* BachelorThesis */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BachelorThesis; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E23B8A022244A63009E2349 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7EBB0246223EFB3A00237618 /* RedBlackTree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RedBlackTree.cpp; sourceTree = "<group>"; };
@@ -73,6 +76,8 @@
 				7E0EB2D92235B48F0035021E /* LinkedList.hpp */,
 				7EBB0246223EFB3A00237618 /* RedBlackTree.cpp */,
 				7EBB0247223EFB3A00237618 /* RedBlackTree.hpp */,
+				7E1753A1228435C200567153 /* Testing.cpp */,
+				7E1753A2228435C200567153 /* Testing.hpp */,
 			);
 			path = BachelorThesis;
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 				7E23B8A122244A63009E2349 /* main.cpp in Sources */,
 				7EBB0248223EFB3A00237618 /* RedBlackTree.cpp in Sources */,
 				7E0EB2DA2235B48F0035021E /* LinkedList.cpp in Sources */,
+				7E1753A3228435C200567153 /* Testing.cpp in Sources */,
 				7E0EAF572233ED6E00FAFD75 /* BaselineOne.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
