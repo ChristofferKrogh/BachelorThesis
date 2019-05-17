@@ -14,7 +14,6 @@
 //#include <stdexcept>
 
 struct RBTNode { // Red Black Tree Node
-    // TODO: add black height here.
     int data;
     RBTNode * parent = nullptr;
     RBTNode * leftChild = nullptr;
@@ -24,7 +23,6 @@ struct RBTNode { // Red Black Tree Node
     bool hasLeftChild() {
         return leftChild != NULL;
     }
-    
     bool hasRightChild() {
         return rightChild != NULL;
     }
@@ -39,13 +37,12 @@ private:
     bool checkRedCriteria(RBTNode * currentNode);
     void fixLineFormation(RBTNode * newNode);
     void fixZigZagFormation(RBTNode * newNode);
-//    void restoreRBTProperties(RBTNode * currentNode);
-    int blackHeight(RBTNode * currentNode);
+    int checkBlackHeight(RBTNode * currentNode);
 
 public:
     RBTNode * root;
-    RBTNode * minNode;
-    RBTNode * maxNode;
+//    RBTNode * minNode;
+//    RBTNode * maxNode;
     
 public:
     RedBlackTree();
@@ -65,8 +62,8 @@ public:
     int blackHeightAssumingValid(RBTNode * currentNode);
     RBTNode * getNodeOfHeight(int blackHeight, bool leftmost);
     void setTree(RedBlackTree * newTree);
-    RBTNode * findMinNode(RBTNode * root);
-    RBTNode * findMaxNode(RBTNode * root);
+    RBTNode * findMinNode();
+    RBTNode * findMaxNode();
     void rotateAfterRedColoring(RBTNode * currentNode);
     void resolveDoubleBlack(RBTNode * currentNode);
     bool hasLeftChild(RBTNode * currentNode);

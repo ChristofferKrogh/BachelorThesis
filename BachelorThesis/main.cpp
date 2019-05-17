@@ -257,8 +257,69 @@ int main(int argc, const char * argv[]) {
 //    std::cout << "treeOne after inserting 6:\n";
 //    treeOne.display(false);
     
-    Testing testing;
-    testing.printTests();
+//    Testing testing;
+//    testing.printTests();
+    
+    RedBlackTree treeOne;
+    treeOne.createNode(58);
+    treeOne.createNode(48);
+    treeOne.display(false);
+    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
+    std::cout << "Shifting with 3:\n";
+    treeOne.shift(3);
+    treeOne.display(false);
+    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
+    treeOne.createNode(68);
+    treeOne.createNode(38);
+    treeOne.createNode(34);
+    treeOne.display(false);
+    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
+    std::cout << "Shifting with -2:\n";
+    treeOne.shift(-2);
+    treeOne.display(true);
+    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
+    treeOne.createNode(12);
+    treeOne.display(false);
+    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
+    treeOne.createNode(14);
+    treeOne.createNode(15);
+    treeOne.createNode(16);
+    treeOne.createNode(17);
+    treeOne.createNode(18);
+    treeOne.createNode(19);
+    treeOne.createNode(20);
+    treeOne.createNode(21);
+    treeOne.createNode(22);
+    treeOne.createNode(23);
+    treeOne.shift(2);
+    treeOne.display(true);
+    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
+    
+    std::cout << "------------JOIN-------------\n";
+    RedBlackTree treeTwo;
+    treeTwo.createNode(104);
+    treeTwo.createNode(114);
+    treeTwo.createNode(124);
+    treeTwo.createNode(134);
+    treeTwo.createNode(144);
+    treeTwo.createNode(154);
+    treeTwo.createNode(164);
+    treeTwo.createNode(174);
+    treeTwo.createNode(184);
+    treeTwo.shift(30);
+    treeOne.display(true);
+    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
+    treeTwo.display(false);
+    std::cout << "Is tree valid? " << treeTwo.isTreeValid() << "\n";
+    
+    treeOne.join(&treeTwo);
+    treeOne.display(false);
+    std::cout << "Is tree valid? " << treeOne.isTreeValid() << "\n";
+    treeTwo.display(false);
+    std::cout << "Is tree valid? " << treeTwo.isTreeValid() << "\n";
+    
+    
+    
     
     std::cout << "\n\n";
 //    treeOne.testDisplay();
