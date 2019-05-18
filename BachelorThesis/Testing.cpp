@@ -48,10 +48,10 @@ void Testing::printTests() {
         linkedListEvenSmall.createNode(i);
         redBlackTreeEvenSmall.createNode(i);
     }
-    std::cout << "Searching in RBT for 2000\n" << redBlackTreeEvenSmall.search(2000)->data << std::endl;
-    std::cout << "Shifting with 2 and searching for 2002\n";
-    redBlackTreeEvenSmall.shift(2);
-    std::cout << redBlackTreeEvenSmall.search(2002)->data << std::endl;
+//    std::cout << "Searching in RBT for 2000\n" << redBlackTreeEvenSmall.search(2000)->data << std::endl;
+//    std::cout << "Shifting with 2 and searching for 2002\n";
+//    redBlackTreeEvenSmall.shift(2);
+//    std::cout << redBlackTreeEvenSmall.search(2002)->data << std::endl;
     
     /*
     std::string results;

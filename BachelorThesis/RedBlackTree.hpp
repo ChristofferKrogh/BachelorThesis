@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <tuple>
 //#include <stdexcept>
 
 struct RBTNode { // Red Black Tree Node
@@ -31,7 +32,7 @@ struct RBTNode { // Red Black Tree Node
 class RedBlackTree {
 private:
     void createNode(RBTNode * currentNode, int newValue);
-    RBTNode * predecessorSearch(RBTNode * currentNode, int searchValue);
+    std::tuple<RBTNode *, int> predecessorSearch(RBTNode * currentNode, int searchValue, int totalShift);
     void rotateTree(RBTNode * newNode);
     void inOrder(RBTNode * currentNode, bool showDetails, int currentShiftValue);
     bool checkRedCriteria(RBTNode * currentNode);
@@ -41,15 +42,13 @@ private:
 
 public:
     RBTNode * root;
-//    RBTNode * minNode;
-//    RBTNode * maxNode;
     
 public:
     RedBlackTree();
     void createNode(int value);
     void createTree(int * values, int listSize);
     void display(bool showDetails);
-    RBTNode * search(int searchValue);
+    std::tuple<RBTNode *, int> search(int searchValue);
     bool isTreeValid();
     int getBlackHeight();
     void shift(int shiftValue);
@@ -60,10 +59,12 @@ public:
     void deleteMinNode();
     void deleteMaxNode();
     int blackHeightAssumingValid(RBTNode * currentNode);
-    RBTNode * getNodeOfHeight(int blackHeight, bool leftmost);
+    std::tuple<RBTNode *, int> getNodeOfHeight(int blackHeight, bool leftmost);
     void setTree(RedBlackTree * newTree);
     RBTNode * findMinNode();
     RBTNode * findMaxNode();
+    std::tuple<RBTNode *, int> findMinNodeWithTotalShift();
+    std::tuple<RBTNode *, int> findMaxNodeWithTotalShift();
     void rotateAfterRedColoring(RBTNode * currentNode);
     void resolveDoubleBlack(RBTNode * currentNode);
     bool hasLeftChild(RBTNode * currentNode);
