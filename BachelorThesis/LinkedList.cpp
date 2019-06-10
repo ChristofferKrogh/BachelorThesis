@@ -104,7 +104,12 @@ void LinkedList::merge(LinkedList * newList) {
     head = k;
     
     while (i != NULL && j != NULL) {
-        if ((i -> data) <= (j -> data)) {
+        if (i->data == j->data) { // This is added to avoid duplicates in resulting list
+            k->next = i;
+            k = k->next;
+            i = i->next;
+            j = j->next;
+        } else if ((i -> data) < (j -> data)) {
             k -> next = i;
             k = k -> next;
             i = i -> next;

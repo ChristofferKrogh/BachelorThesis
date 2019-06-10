@@ -80,7 +80,11 @@ void BaselineOne::merge(BaselineOne newSet) {
     j = 0; // Initial index of second subarray
     k = 0; // Initial index of merged subarray
     while (i < static_cast<int>(values.size()) && j < static_cast<int>(newSet.values.size())) {
-        if (values[i] <= newSet.values[j]) {
+        if (values[i] == newSet.values[j]){ // This is added to avoid duplicates in resulting set
+            mergedSet.push_back(values[i]);
+            i++;
+            j++;
+        } else if (values[i] < newSet.values[j]) {
             mergedSet.push_back(values[i]);
             i++;
         }

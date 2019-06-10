@@ -126,6 +126,10 @@ void RedBlackTree::fixLineFormation(RBTNode * newNode) {
             parent->leftChild->parent = grandparent;
         }
         grandparent->rightChild = parent->leftChild;
+        // The grandparent must not feel the effect of the shift of the parent - but the right child of the grandparent needs the shift of the parent.
+        if (grandparent->hasRightChild()) {
+            grandparent->rightChild->shift += parent->shift;
+        }
         parent->leftChild = grandparent;
         parent->rightChild = newNode;
     } else {
@@ -133,6 +137,10 @@ void RedBlackTree::fixLineFormation(RBTNode * newNode) {
             parent->rightChild->parent = grandparent;
         }
         grandparent->leftChild = parent->rightChild;
+        // The grandparent must not feel the effect of the shift of the parent - but the left child of the grandparent needs the shift of the parent.
+        if (grandparent->hasLeftChild()) {
+            grandparent->leftChild->shift += parent->shift;
+        }
         parent->rightChild = grandparent;
         parent->leftChild = newNode;
     }
@@ -147,12 +155,18 @@ void RedBlackTree::fixZigZagFormation(RBTNode * newNode) {
     RBTNode * grandparent = parent->parent;
     if (newNode->data < parent->data) {
         parent->leftChild = newNode->rightChild;
+        if (parent->hasLeftChild()) {
+            parent->leftChild->shift += newNode->shift; // Update shift
+        }
         parent->parent = newNode;
         newNode->rightChild = parent;
         newNode->parent = grandparent;
         grandparent->rightChild = newNode;
     } else {
         parent->rightChild = newNode->leftChild;
+        if (parent->hasRightChild()) {
+            parent->rightChild->shift += newNode->shift; // Update shift
+        }
         parent->parent = newNode;
         newNode->leftChild = parent;
         newNode->parent = grandparent;
@@ -364,6 +378,7 @@ RBTNode * RedBlackTree::findMaxNode() {
 }
 
 std::tuple<RBTNode *, int> RedBlackTree::findMinNodeWithTotalShift() {
+    // TODO: just return a copy of the node instead.
     RBTNode * currentNode = root;
     int totalShift = 0;
     if (currentNode != NULL) {
@@ -374,10 +389,12 @@ std::tuple<RBTNode *, int> RedBlackTree::findMinNodeWithTotalShift() {
         }
     }
     std::tuple<RBTNode *, int> result = std::make_tuple(currentNode, totalShift);
+    // RBTNode * resultCopy = currentNode->copy();
     return result;
 }
 
 std::tuple<RBTNode *, int> RedBlackTree::findMaxNodeWithTotalShift() {
+    // TODO: just return a copy of the node instead.
     RBTNode * currentNode = root;
     int totalShift = 0;
     if (currentNode != NULL) {
@@ -397,7 +414,6 @@ void RedBlackTree::rotateAfterRedColoring(RBTNode *currentNode) {
     //       p*                        curr
     //  l       curr      ->      p*       r*
     //        l      r         l    l
-    
     
     bool isLeftChild = (currentNode->parent->leftChild == currentNode);
     RBTNode * parent = currentNode->parent;
@@ -421,13 +437,13 @@ void RedBlackTree::rotateAfterRedColoring(RBTNode *currentNode) {
         if (currentNode->parent != NULL) {
             currentNode->data > currentNode->parent->data? currentNode->parent->rightChild = currentNode : currentNode->parent->leftChild = currentNode;
             currentNode->isBlack = false;
-            // TODO: I should maybe rotateTree at currentNode here.
         } else {
             root = currentNode;
             currentNode->isBlack = true;
         }
         
         // Update shift values
+        // TODO: update shift of children
         currentNode->shift += parent->shift;
         parent->shift -= currentNode->shift;
         if (isLeftChild) {
@@ -600,6 +616,7 @@ void RedBlackTree::deleteMinNode() {
         parent->isBlack = false;
         sibling->isBlack = true;
         // Secondly, rotate
+        // TODO: maintain shift
         parent->rightChild = sibling->leftChild;
         parent->rightChild->parent = parent;
         sibling->leftChild = parent;
@@ -735,7 +752,7 @@ void RedBlackTree::join(RedBlackTree * newTree) {
         this->setTree(newTree);
     } else if (newTree->root == NULL) {
         // Do nothing
-    } else if ((std::get<0>(thisMax)->data + std::get<1>(thisMax)) <= (std::get<0>(newTreeMin)->data + std::get<1>(newTreeMin))) { // Verify that all elements are actually smaller
+    } else if ((std::get<0>(thisMax)->data + std::get<1>(thisMax)) < (std::get<0>(newTreeMin)->data + std::get<1>(newTreeMin))) { // Verify that all elements are actually smaller
         int blackHeightOriginal = this->getBlackHeight();
         int blackHeightNew = newTree->getBlackHeight();
         RBTNode * currentNode;
@@ -856,7 +873,7 @@ void RedBlackTree::join(RedBlackTree * newTree) {
     }
 }
 
-RedBlackTree * RedBlackTree::split(int splitValue){
+RedBlackTree * RedBlackTree::split(int splitValue, bool includeSplitValue) {
     RedBlackTree * smallTree = new RedBlackTree;
     RedBlackTree * bigTree = new RedBlackTree;
     RBTNode * currentNode = root;
@@ -922,10 +939,13 @@ RedBlackTree * RedBlackTree::split(int splitValue){
             currentNode = NULL;
         }
         
-        if ((tmpNode->data + tmpNode->shift) <= splitValue) {
+        // To avoid duplicates in the set, I purposely ignore the case where the value of an element is equal to the split value
+        if ((tmpNode->data + tmpNode->shift) < splitValue) {
             smallTree->createNode(tmpNode->data + tmpNode->shift);
-        } else {
+        } else if ((tmpNode->data + tmpNode->shift) > splitValue) {
             bigTree->createNode(tmpNode->data + tmpNode->shift);
+        } else if (includeSplitValue) {
+            smallTree->createNode(tmpNode->data + tmpNode->shift);
         }
     }
 
@@ -941,16 +961,18 @@ void RedBlackTree::merge(RedBlackTree * newTree){
     RedBlackTree * tmpTree = new RedBlackTree;
     std::tuple<RBTNode *, int> thisMin;
     std::tuple<RBTNode *, int> newTreeMin;
+    int thisMinValue;
+    int newTreeMinValue;
     
     while (this->root != NULL && newTree->root != NULL) {
         thisMin = this->findMinNodeWithTotalShift();
         newTreeMin = newTree->findMinNodeWithTotalShift();
-        int thisMinValue = std::get<0>(thisMin)->data + std::get<1>(thisMin);
-        int newTreeMinValue = std::get<0>(newTreeMin)->data + std::get<1>(newTreeMin);
+        thisMinValue = std::get<0>(thisMin)->data + std::get<1>(thisMin);
+        newTreeMinValue = std::get<0>(newTreeMin)->data + std::get<1>(newTreeMin);
         if (thisMinValue < newTreeMinValue) {
-            tmpTree->setTree(this->split(newTreeMinValue));
+            tmpTree->setTree(this->split(newTreeMinValue, false));
         } else {
-            tmpTree->setTree(newTree->split(thisMinValue));
+            tmpTree->setTree(newTree->split(thisMinValue, false));
         }
         mergedTree->join(tmpTree);
     }

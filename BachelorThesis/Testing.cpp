@@ -53,7 +53,7 @@ void Testing::printTests() {
 //    redBlackTreeEvenSmall.shift(2);
 //    std::cout << redBlackTreeEvenSmall.search(2002)->data << std::endl;
     
-    /*
+    
     std::string results;
     results.append("     Split  |  Merge  |  Shift \n");
     std::cout << results;
@@ -93,5 +93,5 @@ void Testing::printTests() {
     redBlackTreeOdd.merge(&redBlackTreeEvenSmall);
     tAfter = std::chrono::high_resolution_clock::now();
     std::cout << "It took " << std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count() << " nanoseconds\n";
-     */
+     
 }

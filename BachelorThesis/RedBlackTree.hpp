@@ -27,6 +27,16 @@ struct RBTNode { // Red Black Tree Node
     bool hasRightChild() {
         return rightChild != NULL;
     }
+//    RBTNode * copy() {
+//        RBTNode * copy = new RBTNode;
+//        copy->data = this->data;
+//        copy->parent = this->parent;
+//        copy->leftChild = this->leftChild;
+//        copy->rightChild = this->rightChild;
+//        copy->shift = this->shift;
+//        copy->isBlack = this->isBlack;
+//        return copy;
+//    }
 };
 
 class RedBlackTree {
@@ -53,7 +63,7 @@ public:
     int getBlackHeight();
     void shift(int shiftValue);
     void merge(RedBlackTree * newTree);
-    RedBlackTree * split(int splitValue);
+    RedBlackTree * split(int splitValue, bool includeSplitValue);
     void join(RedBlackTree * newTree);
     void erase();
     void deleteMinNode();

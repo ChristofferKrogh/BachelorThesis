@@ -14,7 +14,10 @@
 
 struct LLNode { // Linked List Node
     int data;
-    LLNode *next;
+    LLNode *next = nullptr;
+    bool isLast() {
+        return next == NULL;
+    }
 };
 
 class LinkedList {
