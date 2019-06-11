@@ -19,8 +19,12 @@ private:
     
 public:
     std::vector<int> values;
+    int newValues[1];
+    int indexOfLastElement;
+    int arraySize;
     
 public:
+    BaselineOne();
     void insert(int value);
     void setValues(std::vector<int> newValues);
 //    int search(int searchSet[], int setSize, int searchValue);

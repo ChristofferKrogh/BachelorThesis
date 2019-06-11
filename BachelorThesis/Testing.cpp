@@ -35,15 +35,15 @@ void Testing::printTests() {
     listOne.display();*/
     
     
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 1; i < 100000; ++i) {
         baselineOdd.insert((i<<1) - 1);
-        baselineEven.insert(i<<1);
+//        baselineEven.insert(i<<1);
         linkedListOdd.createNode((i<<1) - 1);
-        linkedListEven.createNode(i<<1);
+//        linkedListEven.createNode(i<<1);
         redBlackTreeOdd.createNode((i<<1) - 1);
-        redBlackTreeEven.createNode(i<<1);
+//        redBlackTreeEven.createNode(i<<1);
     }
-    for (int i = 1000; i < 10000; i = i<<1) {
+    for (int i = 1; i < 1000; i = i<<1) {
         baselineEvenSmall.insert(i);
         linkedListEvenSmall.createNode(i);
         redBlackTreeEvenSmall.createNode(i);
@@ -57,25 +57,25 @@ void Testing::printTests() {
     std::string results;
     results.append("     Split  |  Merge  |  Shift \n");
     std::cout << results;
-    std::cout << "Merging baselines...\n";
+//    std::cout << "Merging baselines...\n";
     std::chrono::high_resolution_clock::time_point tBefore = std::chrono::high_resolution_clock::now();
-    baselineOdd.merge(baselineEven);
+//    baselineOdd.merge(baselineEven);
     std::chrono::high_resolution_clock::time_point tAfter = std::chrono::high_resolution_clock::now();
-    std::cout << "It took " << std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count() << " nanoseconds\n";
+//    std::cout << "It took " << std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count() << " nanoseconds\n";
+//
+//    std::cout << "\nMerging linkedlists...\n";
+//    tBefore = std::chrono::high_resolution_clock::now();
+//    linkedListOdd.merge(&linkedListEven);
+//    tAfter = std::chrono::high_resolution_clock::now();
+//    std::cout << "It took " << std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count() << " nanoseconds\n";
+//
+//    std::cout << "\nMerging redblacktrees...\n";
+//    tBefore = std::chrono::high_resolution_clock::now();
+//    redBlackTreeOdd.merge(&redBlackTreeEven);
+//    tAfter = std::chrono::high_resolution_clock::now();
+//    std::cout << "It took " << std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count() << " nanoseconds\n";
     
-    std::cout << "\nMerging linkedlists...\n";
-    tBefore = std::chrono::high_resolution_clock::now();
-    linkedListOdd.merge(&linkedListEven);
-    tAfter = std::chrono::high_resolution_clock::now();
-    std::cout << "It took " << std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count() << " nanoseconds\n";
-    
-    std::cout << "\nMerging redblacktrees...\n";
-    tBefore = std::chrono::high_resolution_clock::now();
-    redBlackTreeOdd.merge(&redBlackTreeEven);
-    tAfter = std::chrono::high_resolution_clock::now();
-    std::cout << "It took " << std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count() << " nanoseconds\n";
-    
-    std::cout << "Merging the data structures with a smaller set\n";
+    std::cout << "\nMerging the data structures with a smaller set\n";
     std::cout << "Merging baselines...\n";
     tBefore = std::chrono::high_resolution_clock::now();
     baselineOdd.merge(baselineEvenSmall);

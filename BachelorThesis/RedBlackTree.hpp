@@ -49,6 +49,7 @@ private:
     void fixLineFormation(RBTNode * newNode);
     void fixZigZagFormation(RBTNode * newNode);
     int checkBlackHeight(RBTNode * currentNode);
+    void reduceBlackHeight(RBTNode *& node, bool goingLeft);
 
 public:
     RBTNode * root;
@@ -79,6 +80,9 @@ public:
     void resolveDoubleBlack(RBTNode * currentNode);
     bool hasLeftChild(RBTNode * currentNode);
     bool hasRightChild(RBTNode * currentNode);
+    RBTNode * bigTreeJoin(RBTNode * root, RBTNode * pb, RBTNode * lTb);
+    RBTNode * smallTreeJoin(RBTNode * root, RBTNode * ps, RBTNode * rTs);
+    RedBlackTree * newSplit(int splitValue, bool includeSplitValue);
 };
 
 #endif /* RedBlackTree_hpp */

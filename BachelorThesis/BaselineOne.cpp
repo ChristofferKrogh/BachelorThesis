@@ -8,9 +8,20 @@
 
 #include "BaselineOne.hpp"
 
+BaselineOne::BaselineOne() {
+    indexOfLastElement = -1;
+    arraySize = 0;
+}
 
 
 void BaselineOne::insert(int value) {
+    // We would like a dynamic set, that we can insert whatever element in without making it unsorted.
+    if (indexOfLastElement == -1) {
+        int newValues[2];
+        newValues[0] = value;
+        this->newValues = newValues;
+    }
+    
     values.push_back(value);
 }
 

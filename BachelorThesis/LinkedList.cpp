@@ -17,9 +17,39 @@ LinkedList::LinkedList() {
 
 void LinkedList::createNode(int value) {
     LLNode *newNode = new LLNode;
-    newNode -> data = value;
+    newNode -> data = value - this->shiftValue;
     newNode -> next = NULL;
     
+    if (head == NULL) {
+        head = newNode;
+        tail = newNode;
+    } else if (newNode->data < head->data) {
+        newNode->next = head;
+        head = newNode;
+    } else {
+        LLNode * smallTmp = head;
+        LLNode * bigTmp = smallTmp->next;
+        while (bigTmp != NULL) {
+            if (smallTmp->data < newNode->data && newNode->data < bigTmp->data) {
+                smallTmp->next = newNode;
+                newNode->next = bigTmp;
+                smallTmp = nullptr;
+                bigTmp = nullptr;
+            } else if (smallTmp->data == newNode->data ||
+                       bigTmp->data == newNode->data) {
+                smallTmp = nullptr;
+                bigTmp = nullptr;
+            } else {
+                smallTmp = bigTmp;
+                bigTmp = bigTmp->next;
+            }
+        }
+        if (smallTmp != NULL) {
+            smallTmp->next = newNode;
+            tail = newNode;
+        }
+    }
+    /*
     if (head == NULL) {
         head = newNode;
         tail = newNode;
@@ -28,6 +58,7 @@ void LinkedList::createNode(int value) {
         tail -> next = newNode;
         tail = newNode;
     }
+     */
 }
 
 void LinkedList::createSet(int * values, int listSize) {
@@ -94,7 +125,11 @@ void LinkedList::merge(LinkedList * newList) {
     LLNode * i = head;  // Initial index of first list
     LLNode * j = newList->head;  // Initial index of second list
     LLNode * k;                         // Initial index of merged list
-    if ((i -> data) <= (j -> data)) {
+    if (i->data == j->data) {
+        k = i;
+        i = i->next;
+        j = j->next;
+    } else if ((i -> data) < (j -> data)) {
         k = i;
         i = i -> next;
     } else {

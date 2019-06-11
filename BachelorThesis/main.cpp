@@ -260,6 +260,34 @@ int main(int argc, const char * argv[]) {
 //    Testing testing;
 //    testing.printTests();
     
+    // Testing the linked list
+//    LinkedList list1;
+//    list1.createNode(7);
+//    list1.createNode(4);
+//    list1.shift(2);
+//    list1.createNode(10);
+//    list1.createNode(10);
+//    list1.createNode(1);
+//    list1.createNode(100);
+//    list1.createNode(15);
+//    list1.display();
+//    for (int i = 20; i < 60; ++i) {
+//        list1.createNode(i);
+//    }
+//    list1.display();
+//    LinkedList list2;
+//    for (int i = 50; i < 100; ++i) {
+//        list2.createNode(i);
+//    }
+//    list2.display();
+//    std::cout << "\nmerging...\n";
+//    list1.merge(&list2);
+//    list1.display();
+//    LinkedList list2 = list1.split(30);
+//    std::cout << "\nSplitting at 30:\n";
+//    list1.display();
+//    list2.display();
+    
 //    RedBlackTree treeOne;
 //    treeOne.createNode(58);
 //    treeOne.createNode(48);
@@ -409,27 +437,42 @@ int main(int argc, const char * argv[]) {
     
     
     // Test split
-    RedBlackTree testTree;
-    testTree.createNode(57);
-    testTree.createNode(5);
-    testTree.createNode(46);
-    testTree.createNode(50);
-    testTree.createNode(40);
-    testTree.createNode(33);
-    testTree.createNode(99);
-    testTree.createNode(14);
-    testTree.createNode(28);
-    testTree.createNode(1);
-    testTree.createNode(100);
-    testTree.createNode(-2);
-    testTree.display(false);
-    std::cout << "Is tree valid? " << testTree.isTreeValid() << "\n";
-    std::cout << "\nSplitting at 40...\n";
-    RedBlackTree * newTree = testTree.split(40, true);
-    newTree->display(false);
-    std::cout << "Is tree valid? " << newTree->isTreeValid() << "\n";
-    testTree.display(false);
-    std::cout << "Is tree valid? " << testTree.isTreeValid() << "\n";
+//    RedBlackTree testTree;
+//    testTree.createNode(57);
+//    testTree.createNode(5);
+//    testTree.createNode(46);
+//    testTree.createNode(50);
+//    testTree.createNode(40);
+//    testTree.createNode(33);
+//    testTree.createNode(99);
+//    testTree.createNode(14);
+//    testTree.createNode(28);
+//    testTree.createNode(1);
+//    testTree.createNode(100);
+//    testTree.createNode(-2);
+//    testTree.display(false);
+//    std::cout << "Is tree valid? " << testTree.isTreeValid() << "\n";
+//    std::cout << "\nSplitting at 40...\n";
+//    RedBlackTree * newTree = testTree.newSplit(40, true);
+//    newTree->display(false);
+//    std::cout << "Is tree valid? " << newTree->isTreeValid() << "\n";
+//    testTree.display(false);
+//    std::cout << "Is tree valid? " << testTree.isTreeValid() << "\n";
+//
+//    testTree.erase();
+//    testTree.display(false);
+//    for (int i = 0; i < 1000; ++i) {
+//        testTree.createNode(i);
+//    }
+//    testTree.display(false);
+//    std::cout << "Is tree valid? " << testTree.isTreeValid() << "\n";
+//    std::cout << "\nSplitting at 4...\n";
+//    newTree->setTree(testTree.newSplit(77, false));
+//    newTree->display(false);
+//    std::cout << "Is tree valid? " << newTree->isTreeValid() << "\n";
+//    testTree.display(false);
+//    std::cout << "Is tree valid? " << testTree.isTreeValid() << "\n";
+    
     // Test join
 //    RedBlackTree two;
 //    two.createNode(100);
@@ -444,6 +487,12 @@ int main(int argc, const char * argv[]) {
 //    std::cout << "Is tree valid? " << two.isTreeValid() << "\n";
 //    testTree.join(&two);
     
+//    BaselineOne base1;
+//    base1.insert(7);
+//    base1.insert(9);
+//    base1.insert(3);
+//    base1.insert(2000000000);
+//    base1.display();
     
     std::cout << "\n\n";
 //    treeOne.testDisplay();
