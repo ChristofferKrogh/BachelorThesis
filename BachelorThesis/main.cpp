@@ -487,14 +487,38 @@ int main(int argc, const char * argv[]) {
 //    std::cout << "Is tree valid? " << two.isTreeValid() << "\n";
 //    testTree.join(&two);
     
-//    BaselineOne base1;
-//    base1.insert(7);
-//    base1.insert(9);
-//    base1.insert(3);
-//    base1.insert(2000000000);
-//    base1.display();
+    BaselineOne base1;
+    base1.insert(7);
+    base1.insert(9);
+    base1.insert(3);
+    base1.insert(20);
+    base1.insert(95);
+    base1.insert(74);
+    base1.insert(90);
+    base1.insert(32);
+    base1.insert(20);
+    base1.insert(19);
+    base1.insert(57);
+    base1.insert(79);
+    base1.insert(93);
+    base1.insert(200);
+    base1.insert(11);
+    base1.display();
+    std::cout << "\nSplitting at 50...\n";
+    BaselineOne base2 = base1.split(50);
+    base2.display();
+    base1.display();
+    base2.insert(27);
+    base2.insert(83);
+    base2.insert(90);
+    base1.insert(15);
+    std::cout << std::endl;
+    base2.display();
+    base1.display();
+    std::cout << "\nMerging...\n";
+    base1.merge(base2);
+    base1.display();
     
     std::cout << "\n\n";
-//    treeOne.testDisplay();
     return 0;
 }

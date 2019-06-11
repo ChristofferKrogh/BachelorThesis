@@ -18,8 +18,8 @@ class BaselineOne {
 private:
     
 public:
-    std::vector<int> values;
-    int newValues[1];
+    std::vector<int> OLDvalues;
+    int * values = new int[0];
     int indexOfLastElement;
     int arraySize;
     
@@ -27,15 +27,10 @@ public:
     BaselineOne();
     void insert(int value);
     void setValues(std::vector<int> newValues);
-//    int search(int searchSet[], int setSize, int searchValue);
     int search(int searchValue);
-//    void shift(int shiftSet[], int setSize, int shiftValue);
     void shift(int shiftValue);
-//    std::tuple<int *, int, int *, int> split(int splitSet[], int setSize, int splitValue);
-    std::vector<int> split(int splitValue);
-//    int * merge(int setOne[], int setTwo[], int setSizeOne, int setSizeTwo);
+    BaselineOne split(int splitValue);
     void merge(BaselineOne newSet);
-//    void display(int array[], int arraySize);
     void display();
 };
 #endif /* BaselineOne_hpp */
