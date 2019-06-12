@@ -81,10 +81,10 @@ int BaselineOne::search(int searchValue) {
     }
     while (leftmostOfSearchArray <= rightmostOfSearchArray) {
         middleOfSearchArray = (leftmostOfSearchArray + rightmostOfSearchArray) / 2;
-        if (values[middleOfSearchArray + 1] > searchValue &&
-            values[middleOfSearchArray] < searchValue) {
+        if (middleOfSearchArray == rightmostOfSearchArray) {
             return middleOfSearchArray;
-        } else if (middleOfSearchArray == rightmostOfSearchArray) {
+        } else if (values[middleOfSearchArray + 1] > searchValue &&
+            values[middleOfSearchArray] < searchValue) {
             return middleOfSearchArray;
         }
         
@@ -95,7 +95,6 @@ int BaselineOne::search(int searchValue) {
         } else {
             return middleOfSearchArray;
         }
-        
     }
     return NULL;
 }

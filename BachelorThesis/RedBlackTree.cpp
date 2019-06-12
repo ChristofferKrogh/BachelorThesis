@@ -873,23 +873,28 @@ void RedBlackTree::join(RedBlackTree * newTree) {
     }
 }
 
+void RedBlackTree::pushShiftDown(RBTNode * node) {
+    if (node->hasLeftChild()) {
+        node->leftChild->shift += node->shift;
+    }
+    if (node->hasRightChild()) {
+        node->rightChild->shift += node->shift;
+    }
+    node->data += node->shift;
+    node->shift = 0;
+}
+
 void RedBlackTree::reduceBlackHeight(RBTNode *& node, bool goingLeft) {
     /*
-     Lets the node pointer point to the next black node - either to the left or right
+     Lets the node pointer point to the next black node - either to the left or right. Also the shift is brought along such that 'node' always contains its total offset.
      */
+    pushShiftDown(node);
+    
     // node should always point to a black node
     if (goingLeft) {
-        if (node->hasLeftChild()) {
-            node = node->leftChild;
-        } else {
-            node = NULL;
-        }
+        node = node->leftChild;
     } else {
-        if (node->hasRightChild()) {
-            node = node->rightChild;
-        } else {
-            node = NULL;
-        }
+        node = node->rightChild;
     }
     
     // node might be red now. We don't want that. The child of a red node is always black or null. We will not reduce the black height further by moving to the child of a red node
@@ -904,6 +909,7 @@ RBTNode * RedBlackTree::bigTreeJoin(RBTNode *root, RBTNode *pb, RBTNode *lTb) {
         this->root->parent = NULL;
         if (!this->root->isBlack) {
             this->root->isBlack = true;
+            pushShiftDown(this->root);
             return this->root->leftChild;
         } else {
             return this->root;
@@ -942,6 +948,7 @@ RBTNode * RedBlackTree::smallTreeJoin(RBTNode * root, RBTNode * ps, RBTNode * rT
         this->root->parent = NULL;
         if (!this->root->isBlack) {
             this->root->isBlack = true;
+            pushShiftDown(this->root);
             return this->root->rightChild;
         } else {
             return this->root;
@@ -982,31 +989,26 @@ RedBlackTree * RedBlackTree::newSplit(int splitValue, bool includeSplitValue) {
     RBTNode * pb = NULL; // Pivot node for big tree
     RBTNode * rTs = NULL; // A pointer to the rightmost node of Ts that has approriate black height
     RBTNode * lTb = NULL; // A pointer to the leftmost node of Tb that has approriate black height
-    bool test1;
-    bool test2;
+    bool isSmallRootRed;
+    bool isBigRootRed;
     
     
     while (currentNode != NULL) {
-        test1 = test2 = false;
-        if (currentNode->hasLeftChild()) {
-            currentNode->leftChild->shift += currentNode->shift;
-        }
-        if (currentNode->hasRightChild()) {
-            currentNode->rightChild->shift += currentNode->shift;
-        }
+        isSmallRootRed = isBigRootRed = false;
+        pushShiftDown(currentNode);
         
-        if (splitValue < (currentNode->data + currentNode->shift)) {
+        if (splitValue < currentNode->data) {
             // join subtree rooted at right child of current node with Tb using pb
             if (currentNode->isBlack && currentNode->hasRightChild() && lTb != NULL) {
                 if (currentNode->rightChild->isBlack) {
                     reduceBlackHeight(lTb, true);
                 } else {
                     currentNode->rightChild->isBlack = true;
-                    test1 = true;
+                    isSmallRootRed = true;
                 }
             }
             lTb = Tb->bigTreeJoin(currentNode->rightChild, pb, lTb);
-            if (test1) {
+            if (isSmallRootRed) {
                 reduceBlackHeight(lTb, true);
             }
             pb = currentNode;
@@ -1014,18 +1016,18 @@ RedBlackTree * RedBlackTree::newSplit(int splitValue, bool includeSplitValue) {
                 reduceBlackHeight(rTs, false);
             }
             currentNode = currentNode->leftChild;
-        } else if (splitValue > (currentNode->data + currentNode->shift)) {
+        } else if (splitValue > currentNode->data) {
             // join subtree rooted at left child of current node with Ts using ps
             if (currentNode->isBlack && currentNode->hasLeftChild() && rTs != NULL) {
                 if (currentNode->leftChild->isBlack) {
                     reduceBlackHeight(rTs, false);
                 } else {
                     currentNode->leftChild->isBlack = true;
-                    test2 = true;
+                    isBigRootRed = true;
                 }
             }
             rTs = Ts->smallTreeJoin(currentNode->leftChild, ps, rTs);
-            if (test2) {
+            if (isBigRootRed) {
                 reduceBlackHeight(rTs, false);
             }
             ps = currentNode;
@@ -1055,99 +1057,19 @@ RedBlackTree * RedBlackTree::newSplit(int splitValue, bool includeSplitValue) {
             ps = NULL;
             pb = NULL;
             if (includeSplitValue) {
-                Ts->createNode(currentNode->data + currentNode->shift);
+                Ts->createNode(currentNode->data);
             }
             currentNode = NULL;
         }
     }
     if (ps != NULL) {
-        Ts->createNode(ps->data + ps->shift);
+        Ts->createNode(ps->data);
     }
     if (pb != NULL) {
-        Tb->createNode(pb->data + pb->shift);
+        Tb->createNode(pb->data);
     }
     this->setTree(Tb);
     return Ts;
-}
-
-RedBlackTree * RedBlackTree::split(int splitValue, bool includeSplitValue) {
-    RedBlackTree * smallTree = new RedBlackTree;
-    RedBlackTree * bigTree = new RedBlackTree;
-    RBTNode * currentNode = root;
-    RBTNode * tmpNode = nullptr;
-    RedBlackTree tmpTree;
-    
-    while (currentNode != NULL) {
-//        currentNode->data += currentNode->shift;
-        if (currentNode->hasLeftChild()) {
-            currentNode->leftChild->shift += currentNode->shift;
-        }
-        if (currentNode->hasRightChild()) {
-            currentNode->rightChild->shift += currentNode->shift;
-        }
-        tmpNode = currentNode;
-        if (splitValue < (currentNode->data + currentNode->shift)) {
-            // join subtree rooted at currentNode->rightChild  with bigTree using the bigTmpNode
-            // Create a RBTree with currentNode->rightChild as root.
-            tmpTree.root = currentNode->rightChild;
-            if (tmpTree.root != NULL) {
-                tmpTree.root->parent = nullptr;
-                tmpTree.root->isBlack = true;
-            }
-            
-            // Join this temperary tree with the bigTree. The join operation must be made from the perspective of the tree with the smallest nodes.
-            tmpTree.join(bigTree);
-            bigTree->setTree(&tmpTree);
-            currentNode = currentNode->leftChild;
-        } else if (splitValue > (currentNode->data + currentNode->shift)) {
-            // join subtree rooted at currentNode->leftChild  with smallTree using the smallTmpNode
-            // Create a RBTree with currentNode->leftChild as root.
-            tmpTree.root = currentNode->leftChild;
-            if (tmpTree.root != NULL) {
-                tmpTree.root->parent = nullptr;
-                tmpTree.root->isBlack = true;
-            }
-            // Join the temperary tree with the smallTree
-            smallTree->join(&tmpTree);
-            currentNode = currentNode->rightChild;
-        } else { // splitValue = currentNode->data
-            // join subtree rooted at currentNode->leftChild  with smallTree using the smallTmpNode
-            // join subtree rooted at currentNode->rightChild  with bigTree using the bigTmpNode
-            // insert currentNode as maximum node in smallTree
-            
-            // Create a RBTree with currentNode->leftChild as root.
-            tmpTree.root = currentNode->leftChild;
-            if (tmpTree.root != NULL) {
-                tmpTree.root->parent = nullptr;
-                tmpTree.root->isBlack = true;
-            }
-            smallTree->join(&tmpTree);
-            
-            
-            // Create a RBTree with currentNode->rightChild as root.
-            tmpTree.root = currentNode->rightChild;
-            if (tmpTree.root != NULL) {
-                tmpTree.root->parent = nullptr;
-                tmpTree.root->isBlack = true;
-            }
-            tmpTree.join(bigTree);
-            bigTree->setTree(&tmpTree);
-            
-            currentNode = NULL;
-        }
-        
-        // To avoid duplicates in the set, I purposely ignore the case where the value of an element is equal to the split value
-        if ((tmpNode->data + tmpNode->shift) < splitValue) {
-            smallTree->createNode(tmpNode->data + tmpNode->shift);
-        } else if ((tmpNode->data + tmpNode->shift) > splitValue) {
-            bigTree->createNode(tmpNode->data + tmpNode->shift);
-        } else if (includeSplitValue) {
-            smallTree->createNode(tmpNode->data + tmpNode->shift);
-        }
-    }
-
-    this->setTree(bigTree);
-    return smallTree;
 }
 
 void RedBlackTree::merge(RedBlackTree * newTree){

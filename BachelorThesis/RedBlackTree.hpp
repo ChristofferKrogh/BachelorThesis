@@ -50,6 +50,7 @@ private:
     void fixZigZagFormation(RBTNode * newNode);
     int checkBlackHeight(RBTNode * currentNode);
     void reduceBlackHeight(RBTNode *& node, bool goingLeft);
+    void pushShiftDown(RBTNode * node);
 
 public:
     RBTNode * root;
@@ -64,7 +65,6 @@ public:
     int getBlackHeight();
     void shift(int shiftValue);
     void merge(RedBlackTree * newTree);
-    RedBlackTree * split(int splitValue, bool includeSplitValue);
     void join(RedBlackTree * newTree);
     void erase();
     void deleteMinNode();
@@ -78,8 +78,6 @@ public:
     std::tuple<RBTNode *, int> findMaxNodeWithTotalShift();
     void rotateAfterRedColoring(RBTNode * currentNode);
     void resolveDoubleBlack(RBTNode * currentNode);
-    bool hasLeftChild(RBTNode * currentNode);
-    bool hasRightChild(RBTNode * currentNode);
     RBTNode * bigTreeJoin(RBTNode * root, RBTNode * pb, RBTNode * lTb);
     RBTNode * smallTreeJoin(RBTNode * root, RBTNode * ps, RBTNode * rTs);
     RedBlackTree * newSplit(int splitValue, bool includeSplitValue);

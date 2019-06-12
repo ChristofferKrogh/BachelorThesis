@@ -486,38 +486,110 @@ int main(int argc, const char * argv[]) {
 //    two.display(false);
 //    std::cout << "Is tree valid? " << two.isTreeValid() << "\n";
 //    testTree.join(&two);
+    // Test merge
     
-    BaselineOne base1;
-    base1.insert(7);
-    base1.insert(9);
-    base1.insert(3);
-    base1.insert(20);
-    base1.insert(95);
-    base1.insert(74);
-    base1.insert(90);
-    base1.insert(32);
-    base1.insert(20);
-    base1.insert(19);
-    base1.insert(57);
-    base1.insert(79);
-    base1.insert(93);
-    base1.insert(200);
-    base1.insert(11);
-    base1.display();
-    std::cout << "\nSplitting at 50...\n";
-    BaselineOne base2 = base1.split(50);
-    base2.display();
-    base1.display();
-    base2.insert(27);
-    base2.insert(83);
-    base2.insert(90);
-    base1.insert(15);
-    std::cout << std::endl;
-    base2.display();
-    base1.display();
-    std::cout << "\nMerging...\n";
-    base1.merge(base2);
-    base1.display();
+    RedBlackTree one;
+    one.createNode(101);
+    one.createNode(501);
+    one.createNode(401);
+    one.createNode(301);
+    one.createNode(201);
+    one.createNode(601);
+    one.createNode(701);
+    one.shift(-4);
+    one.display(false);
+    std::cout << "Is tree valid? " << one.isTreeValid() << "\n";
+    
+    
+    RedBlackTree two;
+    two.createNode(100);
+    two.createNode(547);
+    two.createNode(203);
+    two.createNode(212);
+    two.createNode(199);
+    two.createNode(275);
+    two.createNode(256);
+    two.createNode(243);
+    two.shift(2);
+    two.display(false);
+    std::cout << "Is tree valid? " << two.isTreeValid() << "\n";
+    
+    RedBlackTree three;
+    three.createNode(5);
+    three.createNode(7);
+    three.createNode(15);
+    three.createNode(72);
+    three.createNode(54);
+    three.createNode(17);
+    three.createNode(24);
+    three.shift(3);
+    three.createNode(7);
+    three.display(false);
+    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
+    
+    RedBlackTree four;
+    four.createNode(1015);
+    four.createNode(1115);
+    four.createNode(1005);
+    four.createNode(1018);
+    four.createNode(1275);
+    four.createNode(1073);
+    four.createNode(1058);
+    four.shift(14);
+    four.createNode(1050);
+    four.display(false);
+    std::cout << "Is tree valid? " << four.isTreeValid() << "\n";
+    
+    std::cout << "\nJoining one and three...\n";
+    three.join(&one);
+    three.display(false);
+    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
+    
+    std::cout << "\nJoining three and four...\n";
+    three.join(&four);
+    three.display(false);
+    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
+    
+    std::cout << "\nMergeing three and two...\n";
+    three.merge(&two);
+    three.display(false);
+    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
+    
+    std::cout << "\nSearching for 200...\n";
+    three.search(200);
+    
+    
+//    BaselineOne base1;
+//    base1.insert(7);
+//    base1.insert(9);
+//    base1.insert(3);
+//    base1.insert(20);
+//    base1.insert(95);
+//    base1.insert(74);
+//    base1.insert(90);
+//    base1.insert(32);
+//    base1.insert(20);
+//    base1.insert(19);
+//    base1.insert(57);
+//    base1.insert(79);
+//    base1.insert(93);
+//    base1.insert(200);
+//    base1.insert(11);
+//    base1.display();
+//    std::cout << "\nSplitting at 50...\n";
+//    BaselineOne base2 = base1.split(50);
+//    base2.display();
+//    base1.display();
+//    base2.insert(27);
+//    base2.insert(83);
+//    base2.insert(90);
+//    base1.insert(15);
+//    std::cout << std::endl;
+//    base2.display();
+//    base1.display();
+//    std::cout << "\nMerging...\n";
+//    base1.merge(base2);
+//    base1.display();
     
     std::cout << "\n\n";
     return 0;

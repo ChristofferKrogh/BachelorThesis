@@ -18,7 +18,6 @@ class BaselineOne {
 private:
     
 public:
-    std::vector<int> OLDvalues;
     int * values = new int[0];
     int indexOfLastElement;
     int arraySize;
