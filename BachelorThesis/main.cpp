@@ -556,7 +556,8 @@ int main(int argc, const char * argv[]) {
     std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
     
     std::cout << "\nSearching for 200...\n";
-    three.search(200);
+    RBTNode * node = three.search(5);
+    std::cout << node->data + node->shift << std::endl;
     
     
 //    BaselineOne base1;

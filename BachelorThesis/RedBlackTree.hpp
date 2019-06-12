@@ -16,11 +16,26 @@
 
 struct RBTNode { // Red Black Tree Node
     int data;
-    RBTNode * parent = nullptr;
-    RBTNode * leftChild = nullptr;
-    RBTNode * rightChild = nullptr;
-    int shift = 0;
-    bool isBlack = false;
+    RBTNode * parent;
+    RBTNode * leftChild;
+    RBTNode * rightChild;
+    int shift;
+    bool isBlack;
+    RBTNode() {
+        this->parent = nullptr;
+        this->leftChild = nullptr;
+        this->rightChild = nullptr;
+        this->shift = 0;
+        this->isBlack = false;
+    }
+    RBTNode(int data, RBTNode * parent, RBTNode * leftChild, RBTNode * rightChild, int shift, bool isBlack){
+        this->data = data;
+        this->parent = parent;
+        this->leftChild = leftChild;
+        this->rightChild = rightChild;
+        this->shift = shift;
+        this->isBlack = isBlack;
+    }
     bool hasLeftChild() {
         return leftChild != NULL;
     }
@@ -42,7 +57,7 @@ struct RBTNode { // Red Black Tree Node
 class RedBlackTree {
 private:
     void createNode(RBTNode * currentNode, int newValue);
-    std::tuple<RBTNode *, int> predecessorSearch(RBTNode * currentNode, int searchValue, int totalShift);
+    RBTNode * predecessorSearch(RBTNode * currentNode, int searchValue, int totalShift);
     void rotateTree(RBTNode * newNode);
     void inOrder(RBTNode * currentNode, bool showDetails, int currentShiftValue);
     bool checkRedCriteria(RBTNode * currentNode);
@@ -60,7 +75,7 @@ public:
     void createNode(int value);
     void createTree(int * values, int listSize);
     void display(bool showDetails);
-    std::tuple<RBTNode *, int> search(int searchValue);
+    RBTNode * search(int searchValue);
     bool isTreeValid();
     int getBlackHeight();
     void shift(int shiftValue);

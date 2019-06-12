@@ -318,14 +318,14 @@ void RedBlackTree::inOrder(RBTNode * currentNode, bool showDetails, int currentS
     }
 }
 
-std::tuple<RBTNode *, int> RedBlackTree::search(int searchValue){
+RBTNode * RedBlackTree::search(int searchValue){
     if (root == NULL) {
         throw "Tree is empty";
     }
     return predecessorSearch(root, searchValue, 0);
 }
 
-std::tuple<RBTNode *, int> RedBlackTree::predecessorSearch(RBTNode * currentNode, int searchValue, int totalShift) {
+RBTNode * RedBlackTree::predecessorSearch(RBTNode * currentNode, int searchValue, int totalShift) {
     if (currentNode == NULL) {
         throw "Somehow the currentNode is NULL";
     } else {
@@ -333,7 +333,9 @@ std::tuple<RBTNode *, int> RedBlackTree::predecessorSearch(RBTNode * currentNode
     }
     
     if (searchValue == (currentNode->data + totalShift)) {
-        return std::make_tuple(currentNode, totalShift);
+        //return std::make_tuple(currentNode, totalShift);
+        RBTNode * resultCopy = new RBTNode(currentNode->data, currentNode->parent, currentNode->leftChild, currentNode->rightChild, totalShift, currentNode->isBlack);
+        return resultCopy;
     } else if (searchValue < (currentNode->data + totalShift)) {
         if (currentNode->hasLeftChild()) {
            return predecessorSearch(currentNode->leftChild, searchValue, totalShift);
@@ -342,16 +344,22 @@ std::tuple<RBTNode *, int> RedBlackTree::predecessorSearch(RBTNode * currentNode
                 totalShift -= currentNode->shift;
                 currentNode = currentNode->parent;
                 if (currentNode == NULL) {
-                    throw "No node smaller than or equal to search value exists";
+                    return nullptr;
                 }
             }
-            return std::make_tuple(currentNode, totalShift);
+            //return std::make_tuple(currentNode, totalShift);
+            RBTNode * resultCopy = new RBTNode(currentNode->data, currentNode->parent, currentNode->leftChild, currentNode->rightChild, totalShift, currentNode->isBlack);
+            return resultCopy;
+
         }
     } else if (searchValue > (currentNode->data + totalShift)) {
         if (currentNode->hasRightChild()) {
             return predecessorSearch(currentNode->rightChild, searchValue, totalShift);
         } else {
-            return std::make_tuple(currentNode, totalShift);
+            //return std::make_tuple(currentNode, totalShift);
+            RBTNode * resultCopy = new RBTNode(currentNode->data, currentNode->parent, currentNode->leftChild, currentNode->rightChild, totalShift, currentNode->isBlack);
+            return resultCopy;
+
         }
     }
     throw "Reached the end of search without finding a match";
