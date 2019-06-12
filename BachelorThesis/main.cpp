@@ -257,8 +257,8 @@ int main(int argc, const char * argv[]) {
 //    std::cout << "treeOne after inserting 6:\n";
 //    treeOne.display(false);
     
-//    Testing testing;
-//    testing.printTests();
+    Testing testing;
+    testing.printTests();
     
     // Testing the linked list
 //    LinkedList list1;
@@ -488,77 +488,85 @@ int main(int argc, const char * argv[]) {
 //    testTree.join(&two);
     // Test merge
     
-    RedBlackTree one;
-    one.createNode(101);
-    one.createNode(501);
-    one.createNode(401);
-    one.createNode(301);
-    one.createNode(201);
-    one.createNode(601);
-    one.createNode(701);
-    one.shift(-4);
-    one.display(false);
-    std::cout << "Is tree valid? " << one.isTreeValid() << "\n";
-    
-    
-    RedBlackTree two;
-    two.createNode(100);
-    two.createNode(547);
-    two.createNode(203);
-    two.createNode(212);
-    two.createNode(199);
-    two.createNode(275);
-    two.createNode(256);
-    two.createNode(243);
-    two.shift(2);
-    two.display(false);
-    std::cout << "Is tree valid? " << two.isTreeValid() << "\n";
-    
-    RedBlackTree three;
-    three.createNode(5);
-    three.createNode(7);
-    three.createNode(15);
-    three.createNode(72);
-    three.createNode(54);
-    three.createNode(17);
-    three.createNode(24);
-    three.shift(3);
-    three.createNode(7);
-    three.display(false);
-    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
-    
-    RedBlackTree four;
-    four.createNode(1015);
-    four.createNode(1115);
-    four.createNode(1005);
-    four.createNode(1018);
-    four.createNode(1275);
-    four.createNode(1073);
-    four.createNode(1058);
-    four.shift(14);
-    four.createNode(1050);
-    four.display(false);
-    std::cout << "Is tree valid? " << four.isTreeValid() << "\n";
-    
-    std::cout << "\nJoining one and three...\n";
-    three.join(&one);
-    three.display(false);
-    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
-    
-    std::cout << "\nJoining three and four...\n";
-    three.join(&four);
-    three.display(false);
-    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
-    
-    std::cout << "\nMergeing three and two...\n";
-    three.merge(&two);
-    three.display(false);
-    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
-    
-    std::cout << "\nSearching for 200...\n";
-    RBTNode * node = three.search(5);
-    std::cout << node->data + node->shift << std::endl;
-    
+//    RedBlackTree one;
+//    one.createNode(101);
+//    one.createNode(501);
+//    one.createNode(401);
+//    one.createNode(301);
+//    one.createNode(201);
+//    one.createNode(601);
+//    one.createNode(701);
+//    one.shift(-4);
+//    one.display(false);
+//    std::cout << "Is tree valid? " << one.isTreeValid() << "\n";
+//
+//
+//    RedBlackTree two;
+//    two.createNode(100);
+//    two.createNode(547);
+//    two.createNode(203);
+//    two.createNode(212);
+//    two.createNode(199);
+//    two.createNode(275);
+//    two.createNode(256);
+//    two.createNode(243);
+//    two.shift(2);
+//    two.display(false);
+//    std::cout << "Is tree valid? " << two.isTreeValid() << "\n";
+//
+//    RedBlackTree three;
+//    three.createNode(5);
+//    three.createNode(7);
+//    three.createNode(15);
+//    three.createNode(72);
+//    three.createNode(54);
+//    three.createNode(17);
+//    three.createNode(24);
+//    three.shift(3);
+//    three.createNode(7);
+//    three.display(false);
+//    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
+//
+//    RedBlackTree four;
+//    four.createNode(1015);
+//    four.createNode(1115);
+//    four.createNode(1005);
+//    four.createNode(1018);
+//    four.createNode(1275);
+//    four.createNode(1073);
+//    four.createNode(1058);
+//    four.shift(14);
+//    four.createNode(1050);
+//    four.display(false);
+//    std::cout << "Is tree valid? " << four.isTreeValid() << "\n";
+//
+//    std::cout << "\nJoining one and three...\n";
+//    three.join(&one);
+//    three.display(false);
+//    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
+//
+//    std::cout << "\nJoining three and four...\n";
+//    three.join(&four);
+//    three.display(false);
+//    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
+//
+//    std::cout << "\nMergeing three and two...\n";
+//    three.merge(&two);
+//    three.display(false);
+//    std::cout << "Is tree valid? " << three.isTreeValid() << "\n";
+//
+//    std::cout << "\nSearching for 200...\n";
+//    RBTNode * node = three.search(200);
+//    std::cout << node->data + node->shift << std::endl;
+//
+//    one.createNode(17);
+//    one.shift(4);
+//    two.createNode(17);
+//    two.shift(-2);
+//    one.merge(&two);
+//    one.display(true);
+//    node = one.search(20);
+//    std::cout << node->data << std::endl;
     
 //    BaselineOne base1;
 //    base1.insert(7);

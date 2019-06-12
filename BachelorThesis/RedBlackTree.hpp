@@ -89,13 +89,13 @@ public:
     void setTree(RedBlackTree * newTree);
     RBTNode * findMinNode();
     RBTNode * findMaxNode();
-    std::tuple<RBTNode *, int> findMinNodeWithTotalShift();
-    std::tuple<RBTNode *, int> findMaxNodeWithTotalShift();
+    RBTNode * findMinNodeWithTotalShift();
+    RBTNode * findMaxNodeWithTotalShift();
     void rotateAfterRedColoring(RBTNode * currentNode);
     void resolveDoubleBlack(RBTNode * currentNode);
     RBTNode * bigTreeJoin(RBTNode * root, RBTNode * pb, RBTNode * lTb);
     RBTNode * smallTreeJoin(RBTNode * root, RBTNode * ps, RBTNode * rTs);
-    RedBlackTree * newSplit(int splitValue, bool includeSplitValue);
+    RedBlackTree * split(int splitValue, bool includeSplitValue);
 };
 
 #endif /* RedBlackTree_hpp */
