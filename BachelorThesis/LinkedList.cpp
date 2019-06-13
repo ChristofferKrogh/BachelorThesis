@@ -17,8 +17,8 @@ LinkedList::LinkedList() {
 
 void LinkedList::createNode(int value) {
     LLNode *newNode = new LLNode;
-    newNode -> data = value - this->shiftValue;
-    newNode -> next = NULL;
+    newNode->data = value - this->shiftValue;
+    newNode->next = NULL;
     
     if (head == NULL) {
         head = newNode;
@@ -30,15 +30,15 @@ void LinkedList::createNode(int value) {
         LLNode * smallTmp = head;
         LLNode * bigTmp = smallTmp->next;
         while (bigTmp != NULL) {
-            if (smallTmp->data < newNode->data && newNode->data < bigTmp->data) {
+            if ((smallTmp->data < newNode->data) && (newNode->data < bigTmp->data)) {
                 smallTmp->next = newNode;
                 newNode->next = bigTmp;
-                smallTmp = nullptr;
-                bigTmp = nullptr;
+                smallTmp = NULL;
+                bigTmp = NULL;
             } else if (smallTmp->data == newNode->data ||
                        bigTmp->data == newNode->data) {
-                smallTmp = nullptr;
-                bigTmp = nullptr;
+                smallTmp = NULL;
+                bigTmp = NULL;
             } else {
                 smallTmp = bigTmp;
                 bigTmp = bigTmp->next;
@@ -73,7 +73,7 @@ void LinkedList::display() {
     if (head == NULL)
         std::cout << "The list is empty";
     while (currentNode != NULL) {
-        std::cout << currentNode -> data + shiftValue << "(" << shiftValue << ") ";
+        std::cout << currentNode -> data + shiftValue << " ";
         currentNode = currentNode -> next;
     }
     std::cout << std::endl;

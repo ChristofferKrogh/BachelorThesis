@@ -29,7 +29,7 @@ public:
     int search(int searchValue);
     void shift(int shiftValue);
     BaselineOne split(int splitValue);
-    void merge(BaselineOne newSet);
+    void merge(BaselineOne * newSet);
     void display();
 };
 #endif /* BaselineOne_hpp */

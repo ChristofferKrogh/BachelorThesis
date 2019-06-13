@@ -42,16 +42,6 @@ struct RBTNode { // Red Black Tree Node
     bool hasRightChild() {
         return rightChild != NULL;
     }
-//    RBTNode * copy() {
-//        RBTNode * copy = new RBTNode;
-//        copy->data = this->data;
-//        copy->parent = this->parent;
-//        copy->leftChild = this->leftChild;
-//        copy->rightChild = this->rightChild;
-//        copy->shift = this->shift;
-//        copy->isBlack = this->isBlack;
-//        return copy;
-//    }
 };
 
 class RedBlackTree {
@@ -64,6 +54,7 @@ private:
     void fixLineFormation(RBTNode * newNode);
     void fixZigZagFormation(RBTNode * newNode);
     int checkBlackHeight(RBTNode * currentNode);
+    bool checkParentChildRelations(RBTNode * currentNode);
     void reduceBlackHeight(RBTNode *& node, bool goingLeft);
     void pushShiftDown(RBTNode * node);
 

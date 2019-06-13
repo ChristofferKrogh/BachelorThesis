@@ -34,7 +34,7 @@ void RedBlackTree::createNode(int value){
 void RedBlackTree::createNode(RBTNode * currentNode, int newValue) {
     newValue -= currentNode->shift;
     if (newValue < currentNode->data) {
-        if (currentNode->hasLeftChild()) {
+        if (currentNode->leftChild != NULL) {
             createNode(currentNode->leftChild, newValue);
         } else {
             RBTNode * newNode = new RBTNode;
@@ -45,7 +45,7 @@ void RedBlackTree::createNode(RBTNode * currentNode, int newValue) {
             rotateTree(newNode);
         }
     } else if (newValue > currentNode->data) {
-        if (currentNode->hasRightChild()) {
+        if (currentNode->rightChild != NULL) {
             createNode(currentNode->rightChild, newValue);
         } else {
             RBTNode * newNode = new RBTNode;
@@ -110,7 +110,7 @@ void RedBlackTree::fixLineFormation(RBTNode * newNode) {
     if (grandparent == root) {
         parent->parent = NULL;
         root = parent;
-    } else if (grandparent->parent->leftChild == grandparent) { // the grandparent is the left child
+    } else if (grandparent->data < grandparent->parent->data) { // the grandparent is the left child
         grandparent->parent->leftChild = parent;
         parent->parent = grandparent->parent;
     } else { // the grandparent is the right child
@@ -156,6 +156,7 @@ void RedBlackTree::fixZigZagFormation(RBTNode * newNode) {
     if (newNode->data < parent->data) {
         parent->leftChild = newNode->rightChild;
         if (parent->hasLeftChild()) {
+            parent->leftChild->parent = parent;
             parent->leftChild->shift += newNode->shift; // Update shift
         }
         parent->parent = newNode;
@@ -165,6 +166,7 @@ void RedBlackTree::fixZigZagFormation(RBTNode * newNode) {
     } else {
         parent->rightChild = newNode->leftChild;
         if (parent->hasRightChild()) {
+            parent->rightChild->parent = parent;
             parent->rightChild->shift += newNode->shift; // Update shift
         }
         parent->parent = newNode;
@@ -198,7 +200,7 @@ bool RedBlackTree::isTreeValid() {
     if (checkBlackHeight(root) == -1) {
         return false;
     }
-    return checkRedCriteria(root);
+    return checkRedCriteria(root) && checkParentChildRelations(root);
 }
 
 bool RedBlackTree::checkRedCriteria(RBTNode * currentNode) {
@@ -208,7 +210,7 @@ bool RedBlackTree::checkRedCriteria(RBTNode * currentNode) {
     
     if ((currentNode->hasLeftChild() && (currentNode->leftChild->data + currentNode->leftChild->shift) > currentNode->data) ||
         (currentNode->hasRightChild() &&
-         (currentNode->rightChild->data + currentNode->rightChild->data) < currentNode->data)) {
+         (currentNode->rightChild->data + currentNode->rightChild->shift) < currentNode->data)) {
             std::cout << "The node with value " << currentNode->data << " has at least one child that is misplaced\n";
             return false;
     }
@@ -221,6 +223,28 @@ bool RedBlackTree::checkRedCriteria(RBTNode * currentNode) {
     }
     
     return checkRedCriteria(currentNode->leftChild) && checkRedCriteria(currentNode->rightChild);
+}
+
+bool RedBlackTree::checkParentChildRelations(RBTNode * currentNode) {
+    if (currentNode == NULL) {
+        return true;
+    }
+    
+    if (currentNode->hasLeftChild() &&
+        currentNode->leftChild->parent != currentNode) {
+        std::cout << "Parent-child relation inconsistent at: " << currentNode->data << std::endl;
+        return false;
+    }
+    if (currentNode->hasRightChild() &&
+        currentNode->rightChild->parent != currentNode) {
+        std::cout << "Parent-child relation inconsistent at: " << currentNode->data << std::endl;
+        return false;
+    }
+    
+    bool left = checkParentChildRelations(currentNode->leftChild);
+    bool right = checkParentChildRelations(currentNode->rightChild);
+    
+    return left && right;
 }
 
 int RedBlackTree::checkBlackHeight(RBTNode * currentNode) {
@@ -333,7 +357,6 @@ RBTNode * RedBlackTree::predecessorSearch(RBTNode * currentNode, int searchValue
     }
     
     if (searchValue == (currentNode->data + totalShift)) {
-        //return std::make_tuple(currentNode, totalShift);
         RBTNode * resultCopy = new RBTNode(currentNode->data, currentNode->parent, currentNode->leftChild, currentNode->rightChild, totalShift, currentNode->isBlack);
         return resultCopy;
     } else if (searchValue < (currentNode->data + totalShift)) {
@@ -347,7 +370,6 @@ RBTNode * RedBlackTree::predecessorSearch(RBTNode * currentNode, int searchValue
                     return nullptr;
                 }
             }
-            //return std::make_tuple(currentNode, totalShift);
             RBTNode * resultCopy = new RBTNode(currentNode->data, currentNode->parent, currentNode->leftChild, currentNode->rightChild, totalShift, currentNode->isBlack);
             return resultCopy;
 
@@ -356,7 +378,6 @@ RBTNode * RedBlackTree::predecessorSearch(RBTNode * currentNode, int searchValue
         if (currentNode->hasRightChild()) {
             return predecessorSearch(currentNode->rightChild, searchValue, totalShift);
         } else {
-            //return std::make_tuple(currentNode, totalShift);
             RBTNode * resultCopy = new RBTNode(currentNode->data, currentNode->parent, currentNode->leftChild, currentNode->rightChild, totalShift, currentNode->isBlack);
             return resultCopy;
 

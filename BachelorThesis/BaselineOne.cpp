@@ -130,26 +130,26 @@ BaselineOne BaselineOne::split(int splitValue) {
     return returnList;
 }
 
-void BaselineOne::merge(BaselineOne newList) {
+void BaselineOne::merge(BaselineOne * newList) {
     // Merges the two input sets using methods from merge sort
-    int * mergedList = new int[this->indexOfLastElement + newList.indexOfLastElement + 2];
+    int * mergedList = new int[this->indexOfLastElement + newList->indexOfLastElement + 2];
     int i, j, k;
     // Merge the arrays into mergedSet
     i = 0; // Initial index of first subarray
     j = 0; // Initial index of second subarray
     k = 0; // Initial index of merged subarray
     while (i <= this->indexOfLastElement  &&
-           j <= newList.indexOfLastElement) {
-        if (values[i] == newList.values[j]){ // This is added to avoid duplicates in resulting set
+           j <= newList->indexOfLastElement) {
+        if (values[i] == newList->values[j]){ // This is added to avoid duplicates in resulting set
             mergedList[k] = this->values[i];
             i++;
             j++;
-        } else if (values[i] < newList.values[j]) {
+        } else if (values[i] < newList->values[j]) {
             mergedList[k] = values[i];
             i++;
         }
         else {
-            mergedList[k] = newList.values[j];
+            mergedList[k] = newList->values[j];
             j++;
         }
         k++;
@@ -163,19 +163,19 @@ void BaselineOne::merge(BaselineOne newList) {
     }
     
     // Copy the remaining elements of setTwo, if there are any
-    while (j <= newList.indexOfLastElement) {
-        mergedList[k] = newList.values[j];
+    while (j <= newList->indexOfLastElement) {
+        mergedList[k] = newList->values[j];
         j++;
         k++;
     }
     
     this->values = mergedList;
-    this->indexOfLastElement = this->indexOfLastElement + newList.indexOfLastElement;
-    this->arraySize = this->indexOfLastElement + newList.indexOfLastElement + 1;
+    this->indexOfLastElement = this->indexOfLastElement + newList->indexOfLastElement;
+    this->arraySize = this->indexOfLastElement + newList->indexOfLastElement + 1;
     
-    newList.values = new int[0];
-    newList.indexOfLastElement = -1;
-    newList.arraySize = 0;
+    newList->values = new int[0];
+    newList->indexOfLastElement = -1;
+    newList->arraySize = 0;
 }
 
 void BaselineOne::display() {
