@@ -23,8 +23,16 @@ class Testing {
 private:
     
 public:
-    void printTests();
-    
+    void printTests(int numberOfTests);
+    void printInsertionTests(int setSize, int numberOfTests);
+    void printMergeTwoSegmentsTests(int setSize, int numberOfTests);
+    void printMergeFourSegmentsTests(int setSize, int numberOfTests);
+    void printMergeWorstCaseTests(int setSize, int numberOfTests);
+    void printMergeRandomSetsTests(int setSize, int numberOfTests);
+    void printSearchTests(int setSize, int numberOfTests);
+    void printShiftTests(int setSize, int numberOfTests);
+    void printSplitTests(int setSize, int numberOfTests);
+    void printJoinTests(int setSize, int numberOfTests);
 };
 
 #endif /* Testing_hpp */

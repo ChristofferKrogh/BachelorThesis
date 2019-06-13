@@ -106,27 +106,34 @@ void BaselineOne::shift(int shiftValue) {
 }
 
 BaselineOne BaselineOne::split(int splitValue) {
+    BaselineOne returnList;
     int splitIndex = search(splitValue);
     if (splitIndex < 0) {
-        //        throw error
+        returnList.values = this->values;
+        returnList.indexOfLastElement = this->indexOfLastElement;
+        returnList.arraySize = this->arraySize;
+        this->values = new int[0];
+        this->indexOfLastElement = -1;
+        this->arraySize = 0;
+    } else {
+        int * listOne = new int[splitIndex + 1];
+        int * listTwo = new int[indexOfLastElement - splitIndex - 1];
+        
+        for (int i = 0; i <= splitIndex; ++i) {
+            listOne[i] = values[i];
+        }
+        for (int i = 0; i <= indexOfLastElement - splitIndex - 1; ++i) {
+            listTwo[i] = values[i + splitIndex + 1];
+        }
+        values = listTwo;
+        indexOfLastElement = indexOfLastElement - splitIndex - 1;
+        arraySize = indexOfLastElement - splitIndex;
+        
+        
+        returnList.values = listOne;
+        returnList.indexOfLastElement = splitIndex;
+        returnList.arraySize = splitIndex + 1;
     }
-    int * listOne = new int[splitIndex + 1];
-    int * listTwo = new int[indexOfLastElement - splitIndex - 1];
-    
-    for (int i = 0; i <= splitIndex; ++i) {
-        listOne[i] = values[i];
-    }
-    for (int i = 0; i <= indexOfLastElement - splitIndex - 1; ++i) {
-        listTwo[i] = values[i + splitIndex + 1];
-    }
-    values = listTwo;
-    indexOfLastElement = indexOfLastElement - splitIndex - 1;
-    arraySize = indexOfLastElement - splitIndex;
-    
-    BaselineOne returnList;
-    returnList.values = listOne;
-    returnList.indexOfLastElement = splitIndex;
-    returnList.arraySize = splitIndex + 1;
     return returnList;
 }
 

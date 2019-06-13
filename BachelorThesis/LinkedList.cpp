@@ -8,8 +8,6 @@
 
 #include "LinkedList.hpp"
 
-// Man bør muligvis bruge følgende i stedet:
-// LinkedList::LinkedList():head(NULL), tail(NULL){}
 LinkedList::LinkedList() {
     head = NULL;
     tail = NULL;
@@ -49,16 +47,6 @@ void LinkedList::createNode(int value) {
             tail = newNode;
         }
     }
-    /*
-    if (head == NULL) {
-        head = newNode;
-        tail = newNode;
-        newNode = NULL; // why is this necessary? maybe a way to free up memory.
-    } else {
-        tail -> next = newNode;
-        tail = newNode;
-    }
-     */
 }
 
 void LinkedList::createSet(int * values, int listSize) {
