@@ -18,6 +18,7 @@ void LinkedList::createNode(int value) {
     newNode->data = value - this->shiftValue;
     newNode->next = NULL;
     
+    // We could replace most of this method by using the search method. 
     if (head == NULL) {
         head = newNode;
         tail = newNode;

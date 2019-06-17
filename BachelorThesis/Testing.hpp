@@ -29,7 +29,8 @@ public:
     void printMergeFourSegmentsTests(int setSize, int numberOfTests);
     void printMergeWorstCaseTests(int setSize, int numberOfTests);
     void printMergeRandomSetsTests(int setSize, int numberOfTests);
-    void printSearchTests(int setSize, int numberOfTests);
+    void printMergeRandomSetsOfDifferentSize(int setSizeOne, int setSizeTwo, int numberOfTests);
+    void printSearchTests(int setSize, int numberOfTests, bool showSearchResults);
     void printShiftTests(int setSize, int numberOfTests);
     void printSplitTests(int setSize, int numberOfTests);
     void printJoinTests(int setSize, int numberOfTests);

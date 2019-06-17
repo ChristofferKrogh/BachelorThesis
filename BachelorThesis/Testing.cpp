@@ -309,7 +309,82 @@ void Testing::printMergeRandomSetsTests(int setSize, int numberOfTests) {
     std::cout << "[nanoseconds]\n";
 }
 
-void Testing::printSearchTests(int setSize, int numberOfTests) {
+void Testing::printMergeRandomSetsOfDifferentSize(int setSizeOne, int setSizeTwo, int numberOfTests) {
+    std::cout << "\n--Testing running time of Merge with random sets of different sizes--\n";
+    std::chrono::high_resolution_clock::time_point tBefore;
+    std::chrono::high_resolution_clock::time_point tAfter;
+    BaselineOne * base;
+    LinkedList * list;
+    RedBlackTree * tree;
+    BaselineOne * base2;
+    LinkedList * list2;
+    RedBlackTree * tree2;
+    int newElement;
+    long long results[3][numberOfTests];
+    std::cout << "Number of elements in set 1: " << setSizeOne << "\nNumber of elements in set 2: " << setSizeTwo << "\nNumber of merges: " << numberOfTests << std::endl;
+    for (int i = 0; i < numberOfTests; i++) {
+        base = new BaselineOne;
+        list = new LinkedList;
+        tree = new RedBlackTree;
+        base2 = new BaselineOne;
+        list2 = new LinkedList;
+        tree2 = new RedBlackTree;
+        for (int j = 0; j < setSizeOne; ++j) {
+            newElement = rand();
+            base->insert(newElement);
+            list->createNode(newElement);
+            tree->createNode(newElement);
+        }
+        for (int j = 0; j < setSizeTwo; ++j) {
+            newElement = rand();
+            base2->insert(newElement);
+            list2->createNode(newElement);
+            tree2->createNode(newElement);
+        }
+        // Test baseline
+        tBefore = std::chrono::high_resolution_clock::now();
+        base->merge(base2);
+        tAfter = std::chrono::high_resolution_clock::now();
+        results[0][i] = std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count();
+        
+        // Test linked list
+        tBefore = std::chrono::high_resolution_clock::now();
+        list->merge(list2);
+        tAfter = std::chrono::high_resolution_clock::now();
+        results[1][i] = std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count();
+        
+        // Test red-black tree
+        tBefore = std::chrono::high_resolution_clock::now();
+        tree->merge(tree2);
+        tAfter = std::chrono::high_resolution_clock::now();
+        results[2][i] = std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count();
+        delete base;
+        delete list;
+        delete tree;
+        delete base2;
+        delete list2;
+        delete tree2;
+    }
+    std::cout << "\nBase:\n";
+    for (int i = 0; i < numberOfTests; ++i) {
+        std::cout << results[0][i] << ", ";
+    }
+    std::cout << "[nanoseconds]\n";
+    
+    std::cout << "\nList:\n";
+    for (int i = 0; i < numberOfTests; ++i) {
+        std::cout << results[1][i] << ", ";
+    }
+    std::cout << "[nanoseconds]\n";
+    
+    std::cout << "\nTree:\n";
+    for (int i = 0; i < numberOfTests; ++i) {
+        std::cout << results[2][i] << ", ";
+    }
+    std::cout << "[nanoseconds]\n";
+}
+
+void Testing::printSearchTests(int setSize, int numberOfTests, bool showSearchResults) {
     std::cout << "\n--Testing running time of search--\n";
     std::chrono::high_resolution_clock::time_point tBefore;
     std::chrono::high_resolution_clock::time_point tAfter;
@@ -319,6 +394,9 @@ void Testing::printSearchTests(int setSize, int numberOfTests) {
     int newElement;
     int min = 2147483647; // max integer value
     long long results[3][numberOfTests];
+    int baseIndex;
+    LLNode * listSearch;
+    RBTNode * treeSearch;
     std::cout << "Number of elements: " << setSize << "\nNumber of searches: " << numberOfTests << std::endl;
     for (int j = 0; j < setSize; j++) {
         newElement = rand();
@@ -334,21 +412,28 @@ void Testing::printSearchTests(int setSize, int numberOfTests) {
         newElement = min + (rand() % (2147483647-min)); // We can only search for something that is larger than min of sets.
         // Test baseline
         tBefore = std::chrono::high_resolution_clock::now();
-        base->search(newElement);
+        baseIndex = base->search(newElement);
         tAfter = std::chrono::high_resolution_clock::now();
         results[0][i] = std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count();
         
         // Test linked list
         tBefore = std::chrono::high_resolution_clock::now();
-        list->search(newElement);
+        listSearch = list->search(newElement);
         tAfter = std::chrono::high_resolution_clock::now();
         results[1][i] = std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count();
         
         // Test red-black tree
         tBefore = std::chrono::high_resolution_clock::now();
-        tree->search(newElement);
+        treeSearch = tree->search(newElement);
         tAfter = std::chrono::high_resolution_clock::now();
         results[2][i] = std::chrono::duration_cast<std::chrono::nanoseconds>(tAfter - tBefore).count();
+        
+        if (showSearchResults) {
+            // Print search results
+            std::cout << "\nThe baseline found:       " << base->values[baseIndex] << std::endl;
+            std::cout << "The linked list found:    " << listSearch->data + list->shiftValue << std::endl;
+            std::cout << "The red-black tree found: " << treeSearch->data + treeSearch->shift << std::endl;
+        }
     }
     
     std::cout << "\nBase:\n";
@@ -590,15 +675,16 @@ void Testing::printJoinTests(int setSize, int numberOfTests) {
 
 void Testing::printTests(int numberOfTests) {
     int setSizes[] = {100, 1000, 5000, 10000, 50000, 100000, 500000};
-    for (int i = 0; i < 5; i++) {
-        //this->printInsertionTests(setSizes[i], numberOfTests);
-        //this->printSearchTests(setSizes[i], numberOfTests);
+    for (int i = 0; i < 6; i++) {
+        this->printInsertionTests(setSizes[i], numberOfTests);
+        //this->printSearchTests(setSizes[i], numberOfTests, false);
         //this->printShiftTests(setSizes[i], numberOfTests);
         //this->printSplitTests(setSizes[i], numberOfTests); // max 50000 setSize
         //this->printJoinTests(setSizes[i], numberOfTests);
         //this->printMergeFourSegmentsTests(setSizes[i], 30);
         //this->printMergeWorstCaseTests(setSizes[i], 30);
         //this->printMergeRandomSetsTests(setSizes[i], 30);
+        //printMergeRandomSetsOfDifferentSize(setSizes[i], 100, 30);
     }
-    printMergeRandomSetsTests(100000, 1);
+    //printMergeRandomSetsTests(100000, 1);
 }
